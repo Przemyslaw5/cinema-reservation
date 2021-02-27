@@ -1,0 +1,69 @@
+<div class="modal-header">
+    <!-- <h3 class="modal-title">Log in</h3> -->
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="image">
+        <div class="loginBox">
+            <h3>Log in</h3>
+            <p style="color: green; text-align: center;">{{ registerInfo }}</p>
+            <form class="m-3" [formGroup]="modelForm" novalidate>
+        
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Username:</label>
+                                <input class="form-control" formControlName="username" type="text" placeholder="Enter your username" [ngClass]="{
+                                    'is-valid': modelForm.get('username')?.valid && modelForm.get('username')?.dirty,
+                                    'is-invalid': modelForm.get('username')?.invalid && modelForm.get('username')?.dirty}">
+                                <div class="invalid-feedback" style="min-width: 300px;" *ngIf="modelForm.get('username')?.invalid && modelForm.get('username')?.dirty">
+                                    <p *ngIf="modelForm.get('username')?.errors?.required">Username is required!</p>
+                                    <p *ngIf="modelForm.get('username')?.errors?.minlength">Username has at least 5 characters!</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label style="min-width: 300px">Choose leading question:</label>
+
+                                <select class="form-control" formControlName="question" [ngClass]="{
+                                    'is-valid': modelForm.get('question')?.valid && modelForm.get('question')?.dirty,
+                                    'is-invalid': modelForm.get('question')?.invalid && modelForm.get('question')?.dirty}">
+                                    <option style="width: 500px;" hidden selected></option>
+                                    <option *ngFor="let question of questions" [value]="question">{{question}}</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Answer:</label>
+                                <input class="form-control" formControlName="answer" type="text" placeholder="Enter your Answer" [ngClass]="{
+                                    'is-valid': modelForm.get('answer')?.valid && modelForm.get('answer')?.dirty,
+                                    'is-invalid': modelForm.get('answer')?.invalid && modelForm.get('answer')?.dirty}">
+                                <div class="invalid-feedback" style="min-width: 300px;" *ngIf="modelForm.get('answer')?.invalid && modelForm.get('answer')?.dirty">
+                                    <p *ngIf="modelForm.get('answer')?.errors?.required">Answer is required!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="text-center mt-3 mb-5">
+                    <a class="btn btn-secondary btn-lg disabled" role="button" *ngIf="modelForm.invalid" aria-disabled="true">Login</a>
+                    <button type="button" class="btn btn-primary btn-lg" *ngIf="modelForm.valid" (click)="login()">Login</button>
+                    <div *ngIf="badLogin">
+                        <p class="warning">Login or answer is incorrect! Mayby you choose other question?</p>
+                    </div>
+                </div>
+    
+                <div class="info-register">
+                    You don't have account? <a (click)="changeToRegister()" routerLinkActive="active">Register now!</a> 
+                </div>
+            </form>
+        </div>  
+    </div>
+</div>
+<!-- <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+</div> -->

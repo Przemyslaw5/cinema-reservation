@@ -1,0 +1,29 @@
+li {
+    &:nth-child(odd) {
+      background-color: #eae1e1;
+    }
+  }
+  
+  .card-body {
+    flex: 1 1 auto;
+    padding: 0.9rem;
+  }
+  
+  .hvr-grow {
+    vertical-align: middle;
+    transform: translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    backface-visibility: hidden;
+    transition-duration: 0.3s;
+    transition-property: transform;
+  }
+  .hvr-grow:hover,
+  .hvr-grow:focus,
+  .hvr-grow:active {
+    transform: scale(1.03);
+  }
+
+  .card{
+    min-width: 250px;
+    border-radius: 10px;
+  }

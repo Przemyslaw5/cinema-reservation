@@ -1,0 +1,33 @@
+<ng-template #t let-fill="fill" >
+    <span class="star" [class.full]="fill === 100">
+        <span class="half notification-counter" [style.width.%]="fill">&#9733;</span>&#9733;
+    </span>
+</ng-template>
+      
+<!-- <ngb-rating 
+    [rate]="currentRate" 
+    [starTemplate]="t" 
+    [readonly]="readonly" 
+    max="5"
+    (hover)="hovered=$event" 
+    (leave)="hovered=''"
+    (rateChange)="onRateChange($event)"
+    >
+</ngb-rating> -->
+
+<ngb-rating 
+    [rate]="movieRate" 
+    [starTemplate]="t" 
+    [readonly]="true" 
+    [max]="5"
+    [readonly]="readOnly"
+    (rateChange)="onRateChange($event)"
+    >
+</ngb-rating>
+
+<!-- <pre>
+Your rate:    <b>{{userNumberRate}}</b>
+Average rate: <b>{{currentRate}}</b>
+</pre>
+
+<hr> -->
