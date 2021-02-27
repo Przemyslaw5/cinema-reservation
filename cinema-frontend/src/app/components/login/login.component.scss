@@ -1,0 +1,37 @@
+input, select, option{
+    width: 230px;
+}
+
+.image{
+    // height:50em; background-size:cover; width:auto;
+    padding: 0 50px 0 50px;
+}
+
+.loginBox{
+    background-color: white;
+    width: 100%;
+    // height: 550px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 15px;
+}
+
+.loginBox h3{
+    padding: 30px 0;
+    text-align: center;
+}
+
+.info-register{
+    text-align: center;
+}
+
+.info-register a{
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+}
+
+.warning{
+    color: red;
+    font-weight: bold;
+}

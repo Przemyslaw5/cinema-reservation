@@ -1,0 +1,26 @@
+<!-- <div class="card zebra-card hvr-grow">
+    <img class="card-img-top" [src]="movie.image" />
+    <div class="card-body">
+      <h3 class="card-title">{{ movie.title }}</h3>
+    </div>
+</div> -->
+  
+
+
+
+<div class="card zebra-card hvr-grow">
+  <img class="card-img-top" [src]="movie.image" />
+  <div class="card-body">
+    <h3 class="card-title">{{ movie.title }}</h3>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><b>Gatunek: </b> {{movie.genre}}</li>
+      <li class="list-group-item"><b>Czas trwania: </b> {{movie.durationTime}} min </li>
+      <!-- <li class="list-group-item"><b>Ilość ocen: </b> 32 </li> -->
+      <li class="list-group-item text-center"><app-rating [movieRate]="movie.rate" [readOnly]="true"></app-rating></li>
+    </ul>
+  </div>
+  <div class="card-footer text-center">
+    <a [routerLink]="['/movies', movie.id]" class="btn btn-dark">Details</a>
+  </div>
+</div>
+

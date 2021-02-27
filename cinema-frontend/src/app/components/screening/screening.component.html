@@ -1,0 +1,26 @@
+<!-- <div *ngFor="let row of cinema_places_plan">
+    <div *ngFor="let r of getRow(row)">
+        {{r}}
+    </div>
+</div> -->
+
+
+<!-- <div *ngFor="let ticket of this.selectedProjection?.tickets;let i = index">
+    <button nz-button nzType="primary" nzShape="circle" [disabled]="ticket?.reserve"
+            [style]="{backgroundColor: ticket.selected?'#28a745':'' }"
+            (click)="addOrRemoveTicketCart(ticket)">{{i + 1}}</button>
+</div> -->
+
+<div style="width: 700;" class="center">
+    <table class='table' >
+        <tbody>
+          <tr *ngFor="let row of cinema_places_plan">
+            <td *ngFor="let r of getRow(row)">
+                <!-- <button *ngIf="r == '*'"></button> -->
+                <button *ngIf="r == '*'" type="button" class="btn btn-primary btn-circle btn-sm">{{getPlace()}}</button> 
+            </td>
+          </tr>
+        </tbody>
+    </table>
+</div>
+  

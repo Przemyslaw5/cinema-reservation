@@ -1,0 +1,25 @@
+.star {
+    position: relative;
+    display: inline-block;
+    font-size: 3rem;
+    color: #d3d3d3;
+}
+.full {
+    color: #ffa600;
+}
+.half {
+    position: absolute;
+    display: inline-block;
+    overflow: hidden;
+    color: #ffa600;
+}
+
+.disabled {
+    pointer-events: none; 
+    /* # use this if you want to block all pointer events on element */
+    /* display: none;  */
+    /* # use this if you want to hide element */
+  }
+  .notification-counter {
+    cursor: pointer;
+  }
