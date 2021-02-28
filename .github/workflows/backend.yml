@@ -28,7 +28,7 @@ jobs:
         run: ./cinema-backend/gradlew -b cinema-backend/build.gradle.kts test
 
   build_and_push:
-    needs: backend-test
+    needs: backend_test
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
