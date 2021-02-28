@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { User } from '../model/user';
 
 @Injectable({
@@ -9,7 +10,7 @@ import { User } from '../model/user';
 
 export class UserService {
 
-  DOMAIN = 'http://localhost:8080';
+  DOMAIN = environment.apiBase;
 
   constructor(
     private httpClient: HttpClient
