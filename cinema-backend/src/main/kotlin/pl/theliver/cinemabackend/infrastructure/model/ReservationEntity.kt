@@ -4,17 +4,18 @@ import pl.theliver.cinemabackend.domain.Reservation
 import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.RateCrudRepositoryJpa
 import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.ReservationCrudRepositoryJpa
 import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.SeanceCrudRepositoryJpa
+import java.util.*
 import javax.persistence.*
 
 @Entity
 data class ReservationEntity(
         @Id
-        val id: String,
+        val id: String = UUID.randomUUID().toString(),
         @ManyToOne
         @JoinColumn(name = "user_id")
         var user: UserEntity,
         @OneToMany(mappedBy = "reservation")
-        var places: Collection<PlaceEntity>,
+        var places: List<PlaceEntity>,
         var secretWord: String
 ) {
     fun toDomain() = Reservation(

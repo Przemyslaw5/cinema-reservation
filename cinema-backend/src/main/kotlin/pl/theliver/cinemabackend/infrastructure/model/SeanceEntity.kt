@@ -5,25 +5,26 @@ import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.MovieCrudRepos
 import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.ReservationCrudRepositoryJpa
 import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.ScreeningRoomCrudRepositoryJpa
 import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.SeanceCrudRepositoryJpa
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 import javax.persistence.*
 
 @Entity
 data class SeanceEntity(
         @Id
-        val id: String,
-        val startDate: Date,
-        @OneToMany(mappedBy = "seance")
-        val places: Collection<PlaceEntity>,
+        val id: String = UUID.randomUUID().toString(),
+        val startDate: LocalDateTime,
+        @OneToMany(mappedBy = "seance", fetch = FetchType.LAZY)
+        val places: List<PlaceEntity>,
         @ManyToOne
         @JoinColumn(name = "movie_id")
         val movie: MovieEntity,
         @ManyToOne
         @JoinColumn(name = "screening_room_id")
         var screeningRoom: ScreeningRoomEntity,
-        val durationTime: Int
 ) {
-    fun toDomain() = Seance(id, startDate, places.map { it.toDomain() }, movie.id, screeningRoom.id, durationTime)
+    fun toDomain() = Seance(id, startDate, places.map { it.toDomain() }.toMutableList(), movie.id, screeningRoom.id)
 
     companion object {
         fun fromDomain(
@@ -38,8 +39,7 @@ data class SeanceEntity(
                     startDate,
                     places.map { PlaceEntity.fromDomain(it, seanceCrudRepositoryJpa, reservationCrudRepositoryJpa) },
                     movieCrudRepositoryJpa.findById(movieId).get(),
-                    screeningRoomCrudRepositoryJpa.findById(screeningRoomId).get(),
-                    durationTime
+                    screeningRoomCrudRepositoryJpa.findById(screeningRoomId).get()
             )
         }
     }

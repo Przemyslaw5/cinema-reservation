@@ -10,8 +10,8 @@ data class UserDto(
         val username: String,
         val leadingQuestion: String,
         val leadingAnswer: String,
-        val reservations: Collection<Reservation>,
-        val rates: Collection<Rate>
+        val reservations: List<Reservation>,
+        val rates: List<Rate>
 ) {
 //    fun toDomain() = User(id, username, leadingQuestion, leadingAnswer, reservations, rates)
 //

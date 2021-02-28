@@ -1,12 +1,14 @@
 package pl.theliver.cinemabackend.domain
 
+import java.util.*
+
 data class User(
-    val id: String,
-    val username: String,
-    val leadingQuestion: String,
-    val leadingAnswer: String,
-    val reservationsIds: Collection<String>,
-    val ratesIds: Collection<String>
+        val id: String = UUID.randomUUID().toString(),
+        val username: String,
+        val leadingQuestion: String,
+        val leadingAnswer: String,
+        val reservationsIds: MutableList<String> = mutableListOf(),
+        val ratesIds: MutableList<String> = mutableListOf()
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

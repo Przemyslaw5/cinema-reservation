@@ -4,6 +4,7 @@ import pl.theliver.cinemabackend.domain.Rate
 import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.RateCrudRepositoryJpa
 import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.ReservationCrudRepositoryJpa
 import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.SeanceCrudRepositoryJpa
+import java.util.*
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.JoinColumn
@@ -12,7 +13,7 @@ import javax.persistence.ManyToOne
 @Entity
 data class RateEntity(
         @Id
-        val id: String,
+        val id: String = UUID.randomUUID().toString(),
         @ManyToOne
         @JoinColumn(name = "user_id")
         val user: UserEntity,
