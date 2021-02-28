@@ -18,15 +18,15 @@ data class MovieEntity(
         val description: String,
         val genre: String,
         val image: String,
-        var rate: Double,
-        val ratesNumber: Int,
+        var rate: Double = 0.0,
+        var ratesNumber: Int = 0,
         val durationTime: Int,
         @OneToMany(mappedBy = "movie")
-        var seances: List<SeanceEntity>,
+        var seances: List<SeanceEntity> = emptyList(),
         val releaseDate: LocalDate,
         val director: String,
         @OneToMany(mappedBy = "movie")
-        var rates: List<RateEntity>
+        var rates: List<RateEntity> = emptyList()
 ) {
 
     fun toDomain() = Movie(
@@ -38,10 +38,10 @@ data class MovieEntity(
             rate,
             ratesNumber,
             durationTime,
-            seances.map { it.id },
+            seances.map { it.id }.toMutableList(),
             releaseDate,
             director,
-            rates.map { it.id }
+            rates.map { it.id }.toMutableList()
     )
 
     companion object {

@@ -15,14 +15,14 @@ data class ScreeningRoomEntity(
         @ElementCollection
         var placesPlan: List<String>,
         @OneToMany(mappedBy="screeningRoom")
-        var seances: List<SeanceEntity>
+        var seances: List<SeanceEntity> = emptyList()
 ) {
     fun toDomain() = ScreeningRoom(
             id,
             name,
             placeNumber,
-            placesPlan,
-            seances.map { it.id }
+            placesPlan.toMutableList(),
+            seances.map { it.id }.toMutableList()
     )
 
     companion object {

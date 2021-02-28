@@ -24,7 +24,7 @@ data class SeanceEntity(
         @JoinColumn(name = "screening_room_id")
         var screeningRoom: ScreeningRoomEntity,
 ) {
-    fun toDomain() = Seance(id, startDate, places.map { it.toDomain() }, movie.id, screeningRoom.id)
+    fun toDomain() = Seance(id, startDate, places.map { it.toDomain() }.toMutableList(), movie.id, screeningRoom.id)
 
     companion object {
         fun fromDomain(

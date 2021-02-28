@@ -7,7 +7,7 @@ import java.util.*
 data class Seance(
         val id: String = UUID.randomUUID().toString(),
         val startDate: LocalDateTime,
-        val places: List<Place>,
+        val places: MutableList<Place>,
         val movieId: String,
         val screeningRoomId: String
 )

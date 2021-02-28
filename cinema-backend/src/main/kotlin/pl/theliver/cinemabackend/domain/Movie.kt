@@ -9,11 +9,11 @@ data class Movie(
         val description: String,
         val genre: String,
         val image: String,
-        var rate: Double,
-        val ratesNumber: Int,
+        var rate: Double = 0.0,
+        var ratesNumber: Int = 0,
         val durationTime: Int,
-        val seancesIds: List<String>,
+        val seancesIds: MutableList<String> = mutableListOf(),
         val releaseDate: LocalDate,
         val director: String,
-        val ratesIds: List<String>
+        val ratesIds: MutableList<String> = mutableListOf()
 )

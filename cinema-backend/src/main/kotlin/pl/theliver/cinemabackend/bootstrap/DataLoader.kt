@@ -2,40 +2,25 @@ package pl.theliver.cinemabackend.bootstrap
 
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
-import pl.theliver.cinemabackend.application.repositories.*
-import pl.theliver.cinemabackend.domain.Movie
-import pl.theliver.cinemabackend.domain.ScreeningRoom
-import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.*
-import pl.theliver.cinemabackend.infrastructure.model.*
+import pl.theliver.cinemabackend.application.services.*
+import pl.theliver.cinemabackend.domain.*
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
-import java.util.*
-import javax.persistence.*
-import javax.transaction.Transactional
 
 @Component
-@Transactional
 class DataLoader(
-        private val movieRepository: MovieRepository,
-        private val placeRepository: PlaceRepository,
-        private val rateRepository: RateRepository,
-        private val reservationRepository: ReservationRepository,
-        private val screeningRoomRepository: ScreeningRoomRepository,
-        private val seanceRepository: SeanceRepository,
-        private val userRepository: UserRepository,
-        private val movieCrudRepositoryJpa: MovieCrudRepositoryJpa,
-        private val placeCrudRepositoryJpa: PlaceCrudRepositoryJpa,
-        private val rateCrudRepositoryJpa: RateCrudRepositoryJpa,
-        private val reservationCrudRepositoryJpa: ReservationCrudRepositoryJpa,
-        private val screeningRoomCrudRepositoryJpa: ScreeningRoomCrudRepositoryJpa,
-        private val seanceCrudRepositoryJpa: SeanceCrudRepositoryJpa,
-        private val userCrudRepositoryJpa: UserCrudRepositoryJpa
+        private val movieService: MovieService,
+        private val placeService: PlaceService,
+        private val rateService: RateService,
+        private val reservationService: ReservationService,
+        private val screeningRoomService: ScreeningRoomService,
+        private val seanceService: SeanceService,
+        private val userService: UserService
 ) : CommandLineRunner {
 
     fun initMovies() {
-        val titles = listOf("Interstellar", "Pulp Fiction", "Kalifornia",
-                "Kramer Vs. Kramer", "Inception", "Friends With Benefits")
+        val titles = listOf("Interstellar", "Pulp Fiction", "Kalifornia", "Kramer Vs. Kramer", "Inception",
+                "Friends With Benefits")
         val descriptions = listOf(
                 "Set in a dystopian future where humanity is struggling to survive, the film follows a group of astronauts who travel through a wormhole near Saturn in search of a new home for mankind.",
                 "Vincent Vega (John Travolta) and Jules Winnfield (Samuel L. Jackson) are two hit men on the hunt for a briefcase whose contents were stolen from their boss, Marsellus Wallace (Ving Rhames). They run into a few unexpected detours along the road.",
@@ -51,60 +36,29 @@ class DataLoader(
                 "https://upload.wikimedia.org/wikipedia/en/thumb/b/b0/Oscar_posters_79.jpg/220px-Oscar_posters_79.jpg",
                 "https://upload.wikimedia.org/wikipedia/en/2/2e/Inception_%282010%29_theatrical_poster.jpg",
                 "https://upload.wikimedia.org/wikipedia/en/4/4e/Friends_with_benefits_poster.jpg")
-        val rates = listOf(4.22857, 4.07692, 3.99556, 2.8125, 3.95256, 4.904)
-        val ratesNumbers = listOf(35, 26, 676, 32, 253, 125)
-        val durationTimes = listOf(169, 225, 125, 129, 173, 109)
-//        val seancesIds: List<String>,
+        val durationTimes = listOf(110, 97, 116, 110, 115, 109)
         val releaseDates = listOf(LocalDate.of(2014, 10, 26),
                 LocalDate.of(1993, 3, 27), LocalDate.of(2010, 7, 17),
                 LocalDate.of(2004, 12, 10), LocalDate.of(2001, 2, 11),
                 LocalDate.of(2011, 7, 22))
-        val directors = listOf("Christopher Nolan", "Tom Bring", "Martin Backer",
-                "Thomas Humber", "Stephan Lucky", "Will Gluck")
-//        val ratesIds: List<String>
-
-
-//        val id: String = UUID.randomUUID().toString(),
-//        val title: String,
-//        val description: String,
-//        val genre: String,
-//        val image: String,
-//        var rate: Double,
-//        val ratesNumber: Int,
-//        val durationTime: Int,
-//        @OneToMany(mappedBy = "movie")
-//        var seances: List<SeanceEntity>,
-//        val releaseDate: LocalDate,
-//        val director: String,
-//        @OneToMany(mappedBy = "movie")
-//        var rates: List<RateEntity>
+        val directors = listOf("Christopher Nolan", "Tom Bring", "Martin Backer", "Thomas Humber", "Stephan Lucky",
+                "Will Gluck")
 
         for (i in 0..5) {
-            movieRepository.saveMovie(MovieEntity(
+            movieService.addMovie(Movie(
                     title = titles[i],
                     description = descriptions[i],
                     genre = genres[i],
                     image = images[i],
-                    rate = rates[i],
-                    ratesNumber = ratesNumbers[i],
                     durationTime = durationTimes[i],
-                    seances = emptyList(),
                     releaseDate = releaseDates[i],
                     director = directors[i],
-                    rates = emptyList()
-            ).toDomain())
+            ))
         }
+        println("Add movies successfully")
     }
 
     fun initScreeningRooms() {
-
-//        val id: String = UUID.randomUUID().toString(),
-//        val name: String,
-//        val placeNumber: Int,
-//        @ElementCollection
-//        var placesPlan: List<String>,
-//        @OneToMany(mappedBy="screeningRoom")
-//        var seances: List<SeanceEntity>
 
         val names = listOf("Small hall", "Medium hall", "Big hall")
         val placeNumbers = listOf(38, 70, 141)
@@ -131,96 +85,184 @@ class DataLoader(
         ))
 
         for (i in 0..2) {
-            screeningRoomRepository.saveScreeningRoom(ScreeningRoom(
+            screeningRoomService.addScreeningRoom(ScreeningRoom(
                     name = names[i],
                     placeNumber = placeNumbers[i],
-                    placesPlan = placePlan[i],
-                    seancesIds = emptyList()
+                    placesPlan = placePlan[i].toMutableList(),
             ))
         }
+        println("Add screening rooms successfully")
     }
 
-    fun initSeances() {
-//        val id: String = UUID.randomUUID().toString(),
-//        val startDate: LocalDateTime,
-//        @OneToMany(mappedBy = "seance", fetch = FetchType.LAZY)
-//        val places: List<PlaceEntity>,
-//        @ManyToOne
-//        @JoinColumn(name = "movie_id")
-//        val movie: MovieEntity,
-//        @ManyToOne
-//        @JoinColumn(name = "screening_room_id")
-//        var screeningRoom: ScreeningRoomEntity,
+    fun initSeances(seancesNumber: Int) {
 
+        val hours = listOf(8, 10, 12, 14, 16, 18, 20)
+        val movies = movieService.getAllMovies()
+        val screeningRooms = screeningRoomService.getAllScreeningRooms()
 
-        val startDates = listOf(LocalDate.of(2021, 3, 2).atTime(LocalTime.of(12, 0)),
-                LocalDate.of(2021, 3, 2).atTime(LocalTime.of(15, 0)),
-                LocalDate.of(2021, 3, 2).atTime(LocalTime.of(18, 0))
-        )
-//        val places = listOf()
-//        val movies = listOf()
-//        val screeningRooms = listOf()
-//        val movies = movieRepository.getAllMovies()
-//        val screeningRooms = screeningRoomRepository.getAllScreeningRooms()
+        for (i in 0 until seancesNumber) {
+            val movie = movies.random()
+            val screeningRoom = screeningRooms.random()
+            val seance = Seance(
+                    startDate = LocalDate.of(2021, 3, (1.until(32)).toList().random()).atTime(LocalTime.of(hours.random(), 0)),
+                    places = mutableListOf(),
+                    movieId = movie.id,
+                    screeningRoomId = screeningRoom.id
+            )
+            seanceService.addSeance(seance)
+            movie.seancesIds.add(seance.id)
+        }
+        movies.map { movieService.addMovie(it) }
+        screeningRooms.map { screeningRoomService.addScreeningRoom(it) }
 
-//        for (i in 0..3) {
-//            seanceRepository.saveSeance(SeanceEntity(
-//                    startDate = startDates[i],
-//                    places = emptyList(),
-//                    movie = MovieEntity.fromDomain(movies[0], seanceCrudRepositoryJpa, rateCrudRepositoryJpa),
-//                    screeningRoom = ScreeningRoomEntity.fromDomain(screeningRooms[0], seanceCrudRepositoryJpa)
-//            ).toDomain())
-//        }
+        println("Add seances successfully")
     }
 
     fun initPlaces() {
 
-//        val id: String = UUID.randomUUID().toString(),
-//        val number: Int,
-//        var isReserved: Boolean,
-//        @ManyToOne
-//        @JoinColumn(name = "seance_id")
-//        val seance: SeanceEntity,
-//        @ManyToOne
-//        @JoinColumn(name = "reservation_id")
-//        val reservation: ReservationEntity
-    }
+        val seances = seanceService.getAllSeances()
 
-    fun initRates() {
-//        val id: String = UUID.randomUUID().toString(),
-//        @ManyToOne
-//        @JoinColumn(name = "user_id")
-//        val user: UserEntity,
-//        val userRate: Double,
-//        @ManyToOne
-//        @JoinColumn(name = "movie_id")
-//        val movie: MovieEntity
-    }
+        for (i in seances.indices) {
+            val screeningRoom = screeningRoomService.getScreeningRoomById(seances[i].screeningRoomId)
+            for (j in 0 until screeningRoom.placeNumber) {
+                val seance = seances.random()
+                val place = Place(
+                        number = j + 1,
+                        isReserved = listOf(true, false, false).random(),
+                        seanceId = seance.id
+                )
+                placeService.addPlace(place)
+                seance.places.add(place)
+            }
+        }
+        seances.map { seanceService.addSeance(it) }
 
-    fun initReservations() {
-//        val id: String = UUID.randomUUID().toString(),
-//        @ManyToOne
-//        @JoinColumn(name = "user_id")
-//        var user: UserEntity,
-//        @OneToMany(mappedBy = "reservation")
-//        var places: List<PlaceEntity>,
-//        var secretWord: String
+        println("Add places successfully")
     }
 
     fun initUsers() {
-//        val id: String = UUID.randomUUID().toString(),
-//        val username: String,
-//        val leadingQuestion: String,
-//        val leadingAnswer: String,
-//        @OneToMany(mappedBy = "user")
-//        val reservations: List<ReservationEntity>,
-//        @OneToMany(mappedBy = "user")
-//        val rates: List<RateEntity>
+        val usernames = listOf("goldenleopard404", "silverpeacock265", "lazydog489", "angrydog218", "redtiger294",
+                "ticklishmeercat212", "angrydog814", "brownostrich913", "crazytiger516", "silverlion554",
+                "silverpeacock515", "smallkoala475", "goldenmeercat577", "smallelephant997", "organicgorilla403",
+                "goldenfrog112", "organicmeercat487", "greengorilla298", "saddog425", "yellowbear149", "happyrabbit749"
+        )
+
+        val leadingQuestions = listOf("What is your favourite color?",
+                "Name of your best friend?",
+                "Your pet\'s name?",
+                "Model of your dream car?",
+                "What is your favourite movie?"
+        )
+
+        val leadingAnswers = listOf("blue", "Stephan", "Baca", "Fiat", "hmm", "black", "door", "computer", "kitchen",
+                "I don\'t know", "jacket", "towel", "bike", "glass", "tennis", "cola", "clock", "floor", "purple")
+
+        for (element in usernames) {
+            userService.addUser(User(
+                    username = element,
+                    leadingQuestion = leadingQuestions.random(),
+                    leadingAnswer = leadingQuestions.random()
+            ))
+        }
+
+        println("Add users successfully")
+    }
+
+    fun initRates(ratesNumber: Int) {
+
+        val users = userService.getAllUsers()
+        val rates = listOf(5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 3, 3, 3, 2, 2, 2, 1).map { it.toDouble() }
+        val movies = movieService.getAllMovies()
+
+        for (i in 0 until ratesNumber) {
+            val user = users.random()
+            val movie = movies.random()
+            val rate = Rate(
+                    user = user,
+                    userRate = rates.random(),
+                    movie = movie
+            )
+            rateService.addRate(rate)
+            user.ratesIds.add(rate.id)
+            movie.ratesIds.add(rate.id)
+        }
+        users.map { userService.addUser(it) }
+        movies.map { movieService.addMovie(it) }
+
+        println("Add rates successfully")
+    }
+
+    fun initReservations() {
+
+        val secretWords = listOf("rabbit", "pillow", "blouse", "bulb", "lamp", "glasses", "telephone", "newspaper",
+                "backpack")
+
+        val seances = seanceService.getAllSeances()
+        val users = userService.getAllUsers()
+
+        val booleanTable = listOf(false, false, false, true)
+
+        for (element in seances) {
+            val places = element.places
+            var user = users.random()
+            var userPlaces = mutableListOf<Place>()
+            for (j in places.indices) {
+                if (places[j].isReserved ) {
+                    userPlaces.add(places[j])
+                    if (booleanTable.random()) {
+                        val reservation = Reservation(
+                                user = user,
+                                places = userPlaces,
+                                secretWord = secretWords.random()
+                        )
+                        reservationService.addReservation(reservation)
+                        user = users.random()
+                        userPlaces.map { it.reservationId = reservation.id }
+                        userPlaces.map { placeService.addPlace(it) }
+                        user.reservationsIds.add(reservation.id)
+                        userPlaces = mutableListOf()
+                    }
+                }
+            }
+            val reservation = Reservation(
+                    user = user,
+                    places = userPlaces,
+                    secretWord = secretWords.random()
+            )
+            reservationService.addReservation(reservation)
+            userPlaces.map { it.reservationId = reservation.id }
+            userPlaces.map { placeService.addPlace(it) }
+            user.reservationsIds.add(reservation.id)
+        }
+        users.map { userService.addUser(it) }
+
+        println("Add reservations successfully")
+    }
+
+    fun calculateRatesForEachFilm() {
+        val movies = movieService.getAllMovies()
+
+        for (i in movies.indices) {
+            var sumOfRates = 0.0
+            for (element in movies[i].ratesIds) {
+                sumOfRates += rateService.getRateById(element).userRate
+            }
+            movies[i].rate = sumOfRates / movies[i].ratesIds.size
+            movies[i].ratesNumber = movies[i].ratesIds.size
+        }
+        movies.map { movieService.addMovie(it) }
+
+        println("Calculate rates for each movie successfully")
     }
 
     override fun run(vararg args: String?) {
         initMovies()
         initScreeningRooms()
-        initSeances()
+        initSeances(40)
+        initPlaces()
+        initUsers()
+        initRates(500)
+        initReservations()
+        calculateRatesForEachFilm()
     }
 }

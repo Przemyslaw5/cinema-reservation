@@ -7,8 +7,8 @@ data class User(
         val username: String,
         val leadingQuestion: String,
         val leadingAnswer: String,
-        val reservationsIds: List<String>,
-        val ratesIds: List<String>
+        val reservationsIds: MutableList<String> = mutableListOf(),
+        val ratesIds: MutableList<String> = mutableListOf()
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

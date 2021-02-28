@@ -17,11 +17,18 @@ data class UserEntity(
         val leadingQuestion: String,
         val leadingAnswer: String,
         @OneToMany(mappedBy = "user")
-        val reservations: List<ReservationEntity>,
+        val reservations: List<ReservationEntity> = emptyList(),
         @OneToMany(mappedBy = "user")
-        val rates: List<RateEntity>
+        val rates: List<RateEntity> = emptyList()
 ) {
-    fun toDomain() = User(id, username, leadingQuestion, leadingAnswer, reservations.map { it.id }, rates.map { it.id })
+    fun toDomain() = User(
+            id,
+            username,
+            leadingQuestion,
+            leadingAnswer,
+            reservations.map { it.id }.toMutableList(),
+            rates.map { it.id }.toMutableList()
+    )
 
     companion object {
         fun fromDomain(
