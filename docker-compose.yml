@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+
+  cinema-reservation-router:
+    build: cinema-router
+    container_name: cinema-reservation-router
+    restart: always
+    ports:
+      - 8099:80
+
+  cinema-reservation-fronted:
+    build: cinema-frontend
+    container_name: cinema-reservation-frontend
+    restart: always
+
+  cinema-reservation-backend:
+    build: cinema-backend
+    container_name: cinema-reservation-backend
+    restart: always
