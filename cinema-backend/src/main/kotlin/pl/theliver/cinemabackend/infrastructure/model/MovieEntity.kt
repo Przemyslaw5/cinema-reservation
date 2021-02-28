@@ -3,15 +3,17 @@ package pl.theliver.cinemabackend.infrastructure.model
 import pl.theliver.cinemabackend.domain.Movie
 import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.RateCrudRepositoryJpa
 import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.SeanceCrudRepositoryJpa
+import java.time.LocalDate
 import java.util.*
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.Id
 import javax.persistence.OneToMany
 
 @Entity(name = "Movie")
 data class MovieEntity(
         @Id
-        val id: String,
+        val id: String = UUID.randomUUID().toString(),
         val title: String,
         val description: String,
         val genre: String,
@@ -20,11 +22,11 @@ data class MovieEntity(
         val ratesNumber: Int,
         val durationTime: Int,
         @OneToMany(mappedBy = "movie")
-        val seances: Collection<SeanceEntity>,
-        val releaseDate: Date,
+        var seances: List<SeanceEntity>,
+        val releaseDate: LocalDate,
         val director: String,
         @OneToMany(mappedBy = "movie")
-        val rates: Collection<RateEntity>
+        var rates: List<RateEntity>
 ) {
 
     fun toDomain() = Movie(

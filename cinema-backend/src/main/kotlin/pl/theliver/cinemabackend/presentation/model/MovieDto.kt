@@ -3,6 +3,7 @@ package pl.theliver.cinemabackend.presentation.model
 import pl.theliver.cinemabackend.domain.Movie
 import pl.theliver.cinemabackend.domain.Rate
 import pl.theliver.cinemabackend.domain.Seance
+import java.time.LocalDate
 import java.util.*
 
 data class MovieDto(
@@ -14,10 +15,10 @@ data class MovieDto(
         var rate: Double,
         val ratesNumber: Int,
         val durationTime: Int,
-        val seances: Collection<Seance>,
-        val releaseDate: Date,
+        val seances: List<Seance>,
+        val releaseDate: LocalDate,
         val director: String,
-        val rates: Collection<Rate>
+        val rates: List<Rate>
 ) {
 //    fun toDomain() = Movie(id, title, description, genre, image, rate, ratesNumber, durationTime, seances, releaseDate, director, rates)
 //

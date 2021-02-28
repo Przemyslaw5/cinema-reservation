@@ -8,7 +8,10 @@ import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.SeanceCrudRepo
 import pl.theliver.cinemabackend.infrastructure.model.ScreeningRoomEntity
 
 @Component
-class ScreeningRoomRepositoryJpa(private val screeningRoomCrudRepositoryJpa: ScreeningRoomCrudRepositoryJpa, private val seanceCrudRepositoryJpa: SeanceCrudRepositoryJpa) : ScreeningRoomRepository {
+class ScreeningRoomRepositoryJpa(
+        private val screeningRoomCrudRepositoryJpa: ScreeningRoomCrudRepositoryJpa,
+        private val seanceCrudRepositoryJpa: SeanceCrudRepositoryJpa
+) : ScreeningRoomRepository {
     override fun saveScreeningRoom(screeningRoom: ScreeningRoom) {
         screeningRoomCrudRepositoryJpa.save(ScreeningRoomEntity.fromDomain(screeningRoom, seanceCrudRepositoryJpa))
     }

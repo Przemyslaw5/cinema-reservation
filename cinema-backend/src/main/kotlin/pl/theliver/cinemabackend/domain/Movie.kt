@@ -1,9 +1,10 @@
 package pl.theliver.cinemabackend.domain
 
+import java.time.LocalDate
 import java.util.*
 
 data class Movie(
-        val id: String,
+        val id: String = UUID.randomUUID().toString(),
         val title: String,
         val description: String,
         val genre: String,
@@ -11,8 +12,8 @@ data class Movie(
         var rate: Double,
         val ratesNumber: Int,
         val durationTime: Int,
-        val seancesIds: Collection<String>,
-        val releaseDate: Date,
+        val seancesIds: List<String>,
+        val releaseDate: LocalDate,
         val director: String,
-        val ratesIds: Collection<String>
+        val ratesIds: List<String>
 )
