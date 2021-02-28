@@ -2,18 +2,18 @@ version: "3.8"
 services:
 
   cinema-reservation-router:
-    build: cinema-router
+    image: docker-registry.theliver.pl/cinema-reservation-router:latest
     container_name: cinema-reservation-router
     restart: always
     ports:
-      - 8099:80
+      - 7878:80
 
   cinema-reservation-fronted:
-    build: cinema-frontend
+    image: docker-registry.theliver.pl/cinema-reservation-fronted:latest
     container_name: cinema-reservation-frontend
     restart: always
 
   cinema-reservation-backend:
-    build: cinema-backend
+    image: docker-registry.theliver.pl/cinema-reservation-backend:latest
     container_name: cinema-reservation-backend
     restart: always
