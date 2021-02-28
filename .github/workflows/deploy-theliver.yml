@@ -4,23 +4,114 @@
 name: Deploy to theliver
 
 on:
-  workflow_run:
-    workflows:
-      - "Java CI with Gradle"
-      - "Node.js CI"
-      - "App router CI"
+  push:
     branches: [ master ]
-    types:
-      - completed
 
 env:
-  IMAGE_NAME: cinema-reservation-backend
+  IMAGE_NAME_BACKEND: cinema-reservation-backend
+  IMAGE_NAME_FRONTEND: cinema-reservation-frontend
+  IMAGE_NAME_ROUTER: cinema-reservation-router
   DOCKER_REGISTRY: docker-registry.theliver.pl
 
 jobs:
-  deploy_test:
-
+  backend_build_and_push:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
+
+      - name: Build image
+        run: docker build cinema-backend --file cinema-backend/Dockerfile --tag $IMAGE_NAME_BACKEND
+
+      - name: Login to docker registry
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.THELIVER_DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.THELIVER_DOCKER_REGISTRY_PASSWORD }}
+          registry: docker-registry.theliver.pl
+
+      - name: Push image :latest
+        run: |
+          IMAGE_ID=docker-registry.theliver.pl/$IMAGE_NAME_BACKEND
+          VERSION=latest
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          echo IMAGE_ID=$IMAGE_ID
+          docker tag $IMAGE_NAME_BACKEND $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+
+  frontend_build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build image
+        run: docker build cinema-frontend --file cinema-frontend/Dockerfile --tag $IMAGE_NAME_FRONTEND
+
+      - name: Login to docker registry
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.THELIVER_DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.THELIVER_DOCKER_REGISTRY_PASSWORD }}
+          registry: docker-registry.theliver.pl
+
+      - name: Push image :latest
+        run: |
+          IMAGE_ID=docker-registry.theliver.pl/$IMAGE_NAME_FRONTEND
+          VERSION=latest
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          echo IMAGE_ID=$IMAGE_ID
+          docker tag $IMAGE_NAME_FRONTEND $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+
+  router_build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build image
+        run: docker build cinema-router --file cinema-router/Dockerfile --tag $IMAGE_NAME_ROUTER
+
+      - name: Login to docker registry
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.THELIVER_DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.THELIVER_DOCKER_REGISTRY_PASSWORD }}
+          registry: docker-registry.theliver.pl
+
+      - name: Push image :latest
+        run: |
+          IMAGE_ID=docker-registry.theliver.pl/$IMAGE_NAME_ROUTER
+          VERSION=latest
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          echo IMAGE_ID=$IMAGE_ID
+          docker tag $IMAGE_NAME_ROUTER $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+
+  deploy_to_theliver:
+    runs-on: ubuntu-latest
+    needs:
+      - "backend_build_and_push"
+      - "frontend_build_and_push"
+      - "router_build_and_push"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Copy configuration
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.THELIVER_DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.THELIVER_DOCKER_REGISTRY_PASSWORD }}
+          source: "docker-compose.yml"
+          target: "services/cinema-reservation"
+
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.THELIVER_DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.THELIVER_DOCKER_REGISTRY_PASSWORD }}
+          script: |
+            DOCKER_COMPOSE_FILE=~/services/cinema-reservation/docker-compose.yml
+            ls -la services/cinema-reservation
+            docker-compose -f "$DOCKER_COMPOSE_FILE" pull
+            docker-compose -f "$DOCKER_COMPOSE_FILE" up -d --build
+            docker image prune --all --force
