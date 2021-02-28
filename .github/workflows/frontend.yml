@@ -9,10 +9,6 @@ on:
   pull_request:
     branches: [ master ]
 
-env:
-  IMAGE_NAME: cinema-reservation-frontend
-  DOCKER_REGISTRY: docker-registry.theliver.pl
-
 jobs:
   frontend_build:
 
@@ -28,29 +24,3 @@ jobs:
         run: npm --prefix cinema-frontend/ install
       - name: Build fronted
         run: npm --prefix cinema-frontend/ run-script build
-
-  build_and_push:
-    needs: frontend_build
-    if: github.ref == 'refs/heads/master'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Build image
-        run: docker build cinema-frontend --file cinema-frontend/Dockerfile --tag $IMAGE_NAME
-
-      - name: Login to docker registry
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.THELIVER_DOCKER_REGISTRY_USERNAME }}
-          password: ${{ secrets.THELIVER_DOCKER_REGISTRY_PASSWORD }}
-          registry: docker-registry.theliver.pl
-
-      - name: Push image :latest
-        run: |
-          IMAGE_ID=docker-registry.theliver.pl/$IMAGE_NAME
-          VERSION=latest
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          echo IMAGE_ID=$IMAGE_ID
-          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION

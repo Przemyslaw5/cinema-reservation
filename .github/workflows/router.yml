@@ -14,7 +14,7 @@ env:
   DOCKER_REGISTRY: docker-registry.theliver.pl
 
 jobs:
-  build_and_push:
+  build:
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
@@ -22,19 +22,3 @@ jobs:
 
       - name: Build image
         run: docker build cinema-router --file cinema-router/Dockerfile --tag $IMAGE_NAME
-
-      - name: Login to docker registry
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.THELIVER_DOCKER_REGISTRY_USERNAME }}
-          password: ${{ secrets.THELIVER_DOCKER_REGISTRY_PASSWORD }}
-          registry: docker-registry.theliver.pl
-
-      - name: Push image :latest
-        run: |
-          IMAGE_ID=docker-registry.theliver.pl/$IMAGE_NAME
-          VERSION=latest
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          echo IMAGE_ID=$IMAGE_ID
-          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION
