@@ -8,9 +8,11 @@ services:
     ports:
       - 7878:80
 
-  cinema-reservation-fronted:
-    image: docker-registry.theliver.pl/cinema-reservation-fronted:latest
+  cinema-reservation-frontend:
+    image: docker-registry.theliver.pl/cinema-reservation-frontend:latest
     container_name: cinema-reservation-frontend
+    ports:
+    - 7777:80
     restart: always
 
   cinema-reservation-backend:
