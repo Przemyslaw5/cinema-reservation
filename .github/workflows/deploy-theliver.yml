@@ -98,8 +98,8 @@ jobs:
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.THELIVER_DOCKER_REGISTRY_USERNAME }}
-          password: ${{ secrets.THELIVER_DOCKER_REGISTRY_PASSWORD }}
+          username: ${{ secrets.DEPLOY_USERNAME }}
+          password: ${{ secrets.DEPLOY_PASSWORD }}
           source: "docker-compose.yml"
           target: "services/cinema-reservation"
 
@@ -107,8 +107,8 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.THELIVER_DOCKER_REGISTRY_USERNAME }}
-          password: ${{ secrets.THELIVER_DOCKER_REGISTRY_PASSWORD }}
+          username: ${{ secrets.DEPLOY_USERNAME }}
+          password: ${{ secrets.DEPLOY_PASSWORD }}
           script: |
             DOCKER_COMPOSE_FILE=~/services/cinema-reservation/docker-compose.yml
             ls -la services/cinema-reservation
