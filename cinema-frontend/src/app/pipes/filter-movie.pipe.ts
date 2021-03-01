@@ -10,6 +10,7 @@ export interface MovieFilterData {
   title: string;
   rate: Range;
   genre: MovieGenre;
+  durationTime: Range;
 }
 
 @Pipe({
@@ -28,19 +29,21 @@ export class FilterMoviePipe implements PipeTransform {
     }
 
     if (filter.title){
-      movies = movies.filter(movie => 
-        movie.title.toUpperCase().includes(filter.title.toUpperCase())
-      );
+      movies = movies.filter(movie => movie.title.toUpperCase().includes(filter.title.toUpperCase()));
     }
 
-    if (filter.genre){
-      movies = movies.filter(movie => 
-        movie.genre == filter.genre
-      );
+    if (filter.genre && filter.genre && filter.genre.toString() != 'All'){
+        movies = movies.filter(movie => movie.genre == filter.genre);
+    }
+
+    if (filter.rate){
+      movies = movies.filter(movie => filter.rate.min <= movie.rate && movie.rate <= filter.rate.max)
+    }
+
+    if (filter.durationTime){
+      movies = movies.filter(movie => filter.durationTime.min <= movie.durationTime && movie.durationTime <= filter.durationTime.max)
     }
 
     return movies;
-
   }
-
 }

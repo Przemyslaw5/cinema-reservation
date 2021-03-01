@@ -27,8 +27,9 @@ export class FilterMovieComponent implements OnInit {
 
   filterObject: MovieFilterData = {
     title: "",
+    genre: MovieGenre.Empty,
     rate: {min: 0, max: 5},
-    genre: MovieGenre.Empty
+    durationTime: {min: 60, max: 250}
   }
 
   constructor(
@@ -44,6 +45,13 @@ export class FilterMovieComponent implements OnInit {
     ceil: 5,
     animate: false,
     step: 0.01
+  };
+
+  durationTimeOptions: Options = {
+    floor: 60,
+    ceil: 250,
+    animate: false,
+    step: 1
   };
 
   clear() {

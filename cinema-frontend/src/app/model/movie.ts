@@ -10,9 +10,12 @@ export interface Movie {
 }
 
 export enum MovieGenre {
-    Empty,
-    Komedia,
-    Thriller,
-    Przygodowy,
-    Kryminał
+    "Empty",
+    "All",
+    "Action",
+    "Comedy",
+    "Drama",
+    "Fantasy",
+    "Horror",
+    "Science fiction",
 }
