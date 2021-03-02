@@ -18,6 +18,7 @@ import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ScreeningComponent } from './components/screening/screening.component';
+import { ReservationComponent } from './components/reservation/reservation.component';
 
 
 
@@ -33,7 +34,8 @@ import { ScreeningComponent } from './components/screening/screening.component';
     FilterMoviePipe,
     LoginComponent,
     RegisterComponent,
-    ScreeningComponent
+    ScreeningComponent,
+    ReservationComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +44,7 @@ import { ScreeningComponent } from './components/screening/screening.component';
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxSliderModule
+    NgxSliderModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

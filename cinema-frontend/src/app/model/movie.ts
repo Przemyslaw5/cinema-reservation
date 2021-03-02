@@ -19,3 +19,10 @@ export enum MovieGenre {
     "Horror",
     "Science fiction",
 }
+
+export interface ReservationDate {
+    year: string;
+    month: string;
+    day: string;
+    hour: string;
+  }

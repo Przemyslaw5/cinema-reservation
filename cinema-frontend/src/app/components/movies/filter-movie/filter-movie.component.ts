@@ -1,16 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ChangeContext, Options } from '@angular-slider/ngx-slider';
-import { FormGroup, FormControl } from '@angular/forms';
+import { Options } from '@angular-slider/ngx-slider';
 import { FilterService } from 'src/app/services/filter.service';
 import { MovieFilterData } from 'src/app/pipes/filter-movie.pipe';
 import { MovieGenre } from 'src/app/model/movie';
-
-export enum CourseForm {
-  Lecture,
-  Project,
-  Lab,
-  Excercise
-}
 
 @Component({
   selector: 'app-filter-movie',
@@ -37,7 +29,6 @@ export class FilterMovieComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.getCourseFormKeys();
   }
 
   rateOptions: Options = {
@@ -56,17 +47,15 @@ export class FilterMovieComponent implements OnInit {
 
   clear() {
     this.filterObject.title = "";
-    this.filterObject.rate = {min: 0, max: 5};
     this.filterObject.genre = MovieGenre.Empty;
+    this.filterObject.rate = {min: 0, max: 5};
+    this.filterObject.durationTime = {min: 60, max: 250};
     this.sendFilters();
   }
 
   sendFilters() : void {
+    console.log(this.filterObject.title)
     this.filterService.updateFilters(this.filterObject);
-  }
-
-  onUserChange(changeContext: ChangeContext): void {
-    this.sendFilters();
   }
 
 }

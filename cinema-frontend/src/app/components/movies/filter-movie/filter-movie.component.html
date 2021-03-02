@@ -9,8 +9,7 @@
     <div class="form-group p-4 m-0">
         <label for="MovieGenre">Genre</label>
         <select class="form-control" id="genre" [(ngModel)]="filterObject.genre" (input)="sendFilters()">
-            <option *ngIf="filterObject.genre == emptyGenre" hidden selected></option>
-            <!-- <option><b>All</b></option> -->
+            <!-- <option *ngIf="filterObject.genre == emptyGenre" hidden selected></option> -->
             <option *ngFor="let option of allOptions" [value]="option">{{option}}</option>
         </select>
     </div>
