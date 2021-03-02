@@ -2,12 +2,15 @@ package pl.theliver.cinemabackend.presentation
 
 import org.springframework.web.bind.annotation.*
 import pl.theliver.cinemabackend.application.services.MovieService
+import pl.theliver.cinemabackend.application.services.SeanceService
 import pl.theliver.cinemabackend.presentation.model.MovieDto
+import pl.theliver.cinemabackend.presentation.model.SeanceDto
 
 @RestController
 @CrossOrigin
 class MovieController(
-    private val movieService: MovieService
+        private val movieService: MovieService,
+        private val seanceService: SeanceService
 ) {
 
     @PutMapping("/")
@@ -37,5 +40,7 @@ class MovieController(
     @GetMapping("/movies/{id}")
     fun getMovie(@PathVariable("id") id: String) = movieService.getMovieById(id)
 
-
+    @GetMapping("/movies/{id}/seances")
+    fun getSeancesFromMovie(@PathVariable("id") id: String) =
+            seanceService.getSeancesFromMovie(id).map { SeanceDto.fromDomain(it) }
 }
