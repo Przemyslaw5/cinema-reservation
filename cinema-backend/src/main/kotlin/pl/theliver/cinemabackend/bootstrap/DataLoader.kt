@@ -6,6 +6,7 @@ import pl.theliver.cinemabackend.application.services.*
 import pl.theliver.cinemabackend.domain.*
 import java.time.LocalDate
 import java.time.LocalTime
+import java.util.logging.Logger
 
 @Component
 class DataLoader(
@@ -17,6 +18,8 @@ class DataLoader(
         private val seanceService: SeanceService,
         private val userService: UserService
 ) : CommandLineRunner {
+
+    val logger: Logger = Logger.getLogger(DataLoader::class.java.name)
 
     fun initMovies() {
         val titles = listOf("Interstellar", "Pulp Fiction", "Kalifornia", "Kramer Vs. Kramer", "Inception",
@@ -55,7 +58,7 @@ class DataLoader(
                     director = directors[i],
             ))
         }
-        println("Add movies successfully")
+        logger.info("Add movies successfully")
     }
 
     fun initScreeningRooms() {
@@ -91,7 +94,7 @@ class DataLoader(
                     placesPlan = placePlan[i].toMutableList(),
             ))
         }
-        println("Add screening rooms successfully")
+        logger.info("Add screening rooms successfully")
     }
 
     fun initSeances(seancesNumber: Int) {
@@ -115,7 +118,7 @@ class DataLoader(
         movies.map { movieService.addMovie(it) }
         screeningRooms.map { screeningRoomService.addScreeningRoom(it) }
 
-        println("Add seances successfully")
+        logger.info("Add seances successfully")
     }
 
     fun initPlaces() {
@@ -125,7 +128,6 @@ class DataLoader(
         for (i in seances.indices) {
             val screeningRoom = screeningRoomService.getScreeningRoomById(seances[i].screeningRoomId)
             for (j in 0 until screeningRoom.placeNumber) {
-//                val seance = seances.random()
                 val place = Place(
                         number = j + 1,
                         isReserved = listOf(true, false, false).random(),
@@ -137,7 +139,7 @@ class DataLoader(
         }
         seances.map { seanceService.addSeance(it) }
 
-        println("Add places successfully")
+        logger.info("Add places successfully")
     }
 
     fun initUsers() {
@@ -165,7 +167,7 @@ class DataLoader(
             ))
         }
 
-        println("Add users successfully")
+        logger.info("Add users successfully")
     }
 
     fun initRates(ratesNumber: Int) {
@@ -189,7 +191,7 @@ class DataLoader(
         users.map { userService.addUser(it) }
         movies.map { movieService.addMovie(it) }
 
-        println("Add rates successfully")
+        logger.info("Add rates successfully")
     }
 
     fun initReservations() {
@@ -236,7 +238,7 @@ class DataLoader(
         }
         users.map { userService.addUser(it) }
 
-        println("Add reservations successfully")
+        logger.info("Add reservations successfully")
     }
 
     fun calculateRatesForEachFilm() {
@@ -252,7 +254,7 @@ class DataLoader(
         }
         movies.map { movieService.addMovie(it) }
 
-        println("Calculate rates for each movie successfully")
+        logger.info("Calculate rates for each movie successfully")
     }
 
     override fun run(vararg args: String?) {
