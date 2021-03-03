@@ -60,7 +60,7 @@ export class ReservationComponent implements OnInit {
   }
 
   prepareYears() {
-    this.yearOptions = this.allSeancesFromMovie.map(seance => seance.startDate.year).filter((value, index, self) => self.indexOf(value) === index)
+    this.yearOptions = this.allSeancesFromMovie.map(seance => seance.startDate.year).filter((value, index, self) => self.indexOf(value) === index).sort()
     if (this.yearOptions.length == 1) {
       this.reservationDate.year = this.yearOptions[0]
       this.prepareMonths()
@@ -74,7 +74,7 @@ export class ReservationComponent implements OnInit {
     this.dayOptions = [];
     this.hourOptions = [];
 
-    this.monthOptions = this.allSeancesFromMovie.filter(seance => seance.startDate.year == this.reservationDate.year).map(seance => seance.startDate.month).filter((value, index, self) => self.indexOf(value) === index)
+    this.monthOptions = this.allSeancesFromMovie.filter(seance => seance.startDate.year == this.reservationDate.year).map(seance => seance.startDate.month).filter((value, index, self) => self.indexOf(value) === index).sort()
 
     if (this.monthOptions.length == 1) {
       this.reservationDate.month = this.monthOptions[0]
@@ -87,7 +87,7 @@ export class ReservationComponent implements OnInit {
     this.reservationDate.hour = "";
     this.hourOptions = [];
 
-    this.dayOptions = this.allSeancesFromMovie.filter(seance => seance.startDate.year == this.reservationDate.year && seance.startDate.month == this.reservationDate.month).map(seance => seance.startDate.day).filter((value, index, self) => self.indexOf(value) === index)
+    this.dayOptions = this.allSeancesFromMovie.filter(seance => seance.startDate.year == this.reservationDate.year && seance.startDate.month == this.reservationDate.month).map(seance => seance.startDate.day).filter((value, index, self) => self.indexOf(value) === index).sort()
 
     if (this.dayOptions.length == 1) {
       this.reservationDate.day = this.dayOptions[0]
@@ -98,7 +98,7 @@ export class ReservationComponent implements OnInit {
   prepareHours() {
     this.reservationDate.hour = "";
     
-    this.hourOptions = this.allSeancesFromMovie.filter(seance => seance.startDate.year == this.reservationDate.year && seance.startDate.month == this.reservationDate.month && seance.startDate.day == this.reservationDate.day).map(seance => seance.startDate.hour + ':' + seance.startDate.min + ' ' + seance.screeningRoomName)
+    this.hourOptions = this.allSeancesFromMovie.filter(seance => seance.startDate.year == this.reservationDate.year && seance.startDate.month == this.reservationDate.month && seance.startDate.day == this.reservationDate.day).map(seance => seance.startDate.hour + ':' + seance.startDate.min + ' ' + seance.screeningRoomName).sort()
     
     if (this.hourOptions.length == 1) {
       this.reservationDate.hour = this.hourOptions[0]

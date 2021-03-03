@@ -83,15 +83,33 @@
                 </div>
             </div>
             <div class="col-md-12" *ngIf="reservationDate.hour != ''">
+
+                <div class="col-md-12 my-5">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div style="display: inline-block;"><button type="button" class="btn btn-dark buttonShape"></button></div>
+                            <div class="ml-2" style="display: inline-block;"><b> - You can reservate this place</b></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div style="display: inline-block;"><button type="button" class="btn btn-success buttonShape"></button></div>
+                            <div class="ml-2" style="display: inline-block;"><b> - Place chose by you</b></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div style="display: inline-block;"><button type="button" class="btn btn-secondary disabled cursor-disabled buttonShape"></button></div>
+                            <div class="ml-2" style="display: inline-block;"><b> - This place is already reserved</b></div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="center">
                     <table class='table' style="width: 100%;">
                         <tbody>
                           <tr *ngFor="let row of placefForTemplate; index as i">
                             <td *ngFor="let place of row; index as j" class="px-0">
                                 <div *ngIf="place.number != ' '">
-                                    <button *ngIf="place.isReserved == 1" type="button" class="btn btn-secondary disabled cursor-disabled ameno" (click)="clickSeat(i, j)">{{place.number}}</button> 
-                                    <button *ngIf="place.isReserved == 0" type="button" class="btn btn-dark ameno" (click)="clickSeat(i, j)">{{place.number}}</button> 
-                                    <button *ngIf="place.isReserved == 2" type="button" class="btn btn-success ameno" (click)="clickSeat(i, j)">{{place.number}}</button> 
+                                    <button *ngIf="place.isReserved == 1" type="button" class="btn btn-secondary disabled cursor-disabled buttonShape" (click)="clickSeat(i, j)">{{place.number}}</button> 
+                                    <button *ngIf="place.isReserved == 0" type="button" class="btn btn-dark buttonShape" (click)="clickSeat(i, j)">{{place.number}}</button> 
+                                    <button *ngIf="place.isReserved == 2" type="button" class="btn btn-success buttonShape" (click)="clickSeat(i, j)">{{place.number}}</button> 
                                 </div>
                             </td>
                           </tr>
