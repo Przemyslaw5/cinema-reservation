@@ -7,12 +7,12 @@ import { RegisterComponent } from './components/register/register.component';
 import { ReservationComponent } from './components/reservation/reservation.component';
 
 const routes: Routes = [
+  { path: '', component: MovieListComponent },
   { path: 'movies', component: MovieListComponent },
-  { path: 'movies/details', component: MovieDetailsComponent },
   { path: 'movies/:id', component: MovieDetailsComponent },
   { path: 'login', component: LoginComponent },
   { path: 'sign-up', component: RegisterComponent },
-  { path: 'reservations/:id', component: ReservationComponent },
+  { path: 'movies/:id/reservations', component: ReservationComponent },
 ];
 
 @NgModule({

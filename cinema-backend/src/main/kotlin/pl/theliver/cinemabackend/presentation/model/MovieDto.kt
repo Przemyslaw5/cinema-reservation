@@ -18,6 +18,7 @@ data class MovieDto(
         val releaseDate: LocalDate,
         val director: String
 ) {
+
     fun toDomain(
             seanceService: SeanceService,
             rateService: RateService

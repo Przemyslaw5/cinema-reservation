@@ -37,11 +37,8 @@
                 </div>
 
                 <div class="rate-reservation p-0 m-0 color">
-                    <!-- <div class="text-center justify-content-center align-items-center">
-                        <a class="btn btn-dark">Make reservation</a>
-                    </div> -->
                     <div class="d-flex align-items-center justify-content-center text-center" style="height: 100%">
-                        <a [routerLink]="['/reservations', movie.id]" class="btn btn-dark">Make reservation</a>
+                        <a [routerLink]="['/movies', movie.id, 'reservations']" class="btn btn-dark">Make reservation</a>
                       </div>
                 </div>
             </div>

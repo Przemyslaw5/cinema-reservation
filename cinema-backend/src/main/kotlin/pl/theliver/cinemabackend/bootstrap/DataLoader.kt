@@ -125,14 +125,14 @@ class DataLoader(
         for (i in seances.indices) {
             val screeningRoom = screeningRoomService.getScreeningRoomById(seances[i].screeningRoomId)
             for (j in 0 until screeningRoom.placeNumber) {
-                val seance = seances.random()
+//                val seance = seances.random()
                 val place = Place(
                         number = j + 1,
                         isReserved = listOf(true, false, false).random(),
-                        seanceId = seance.id
+                        seanceId = seances[i].id
                 )
                 placeService.addPlace(place)
-                seance.places.add(place)
+                seances[i].places.add(place)
             }
         }
         seances.map { seanceService.addSeance(it) }
