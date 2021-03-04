@@ -4,9 +4,9 @@ import pl.theliver.cinemabackend.domain.Movie
 import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.RateCrudRepositoryJpa
 import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.SeanceCrudRepositoryJpa
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 import javax.persistence.Entity
-import javax.persistence.FetchType
 import javax.persistence.Id
 import javax.persistence.OneToMany
 

@@ -5,6 +5,7 @@ import pl.theliver.cinemabackend.application.services.MovieService
 import pl.theliver.cinemabackend.application.services.PlaceService
 import pl.theliver.cinemabackend.application.services.ScreeningRoomService
 import pl.theliver.cinemabackend.application.services.SeanceService
+import pl.theliver.cinemabackend.domain.MovieGenre
 import pl.theliver.cinemabackend.presentation.model.ScreeningRoomDto
 import pl.theliver.cinemabackend.presentation.model.SeanceDto
 
@@ -24,7 +25,8 @@ class MovieController(
     fun getMovie(@PathVariable("id") id: String) = movieService.getMovieById(id)
 
     @GetMapping("/movies/{id}/seances")
-    fun getSeancesFromMovieId(@PathVariable("id") id: String) = seanceService.getSeancesFromMovie(id).map { SeanceDto.fromDomain(it, screeningRoomService) }
+    fun getSeancesFromMovieId(@PathVariable("id") id: String) =
+            seanceService.getSeancesFromMovie(id).map { SeanceDto.fromDomain(it, screeningRoomService) }
 
     @GetMapping("/screening-rooms/{id}")
     fun getScreeningRoom(@PathVariable("id") id: String) =
@@ -33,4 +35,7 @@ class MovieController(
     @GetMapping("/screening-rooms/{id}/places")
     fun getPlacesFromSeanceId(@PathVariable("id") id: String) =
             placeService.getAllPlaces().filter { it.seanceId == id }
+
+    @GetMapping("/genres")
+    fun getAllGenres() = MovieGenre.values()
 }

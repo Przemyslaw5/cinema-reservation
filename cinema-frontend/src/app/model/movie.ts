@@ -5,24 +5,6 @@ export interface Movie {
     image: string;
     rate: number;
     ratesNumber: number;
-    genre: MovieGenre;
+    genre: string;
     durationTime: number;
 }
-
-export enum MovieGenre {
-    "Empty",
-    "All",
-    "Action",
-    "Comedy",
-    "Drama",
-    "Fantasy",
-    "Horror",
-    "Science fiction",
-}
-
-export interface ReservationDate {
-    year: string;
-    month: string;
-    day: string;
-    hour: string;
-  }

@@ -4,6 +4,7 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
 import pl.theliver.cinemabackend.application.services.*
 import pl.theliver.cinemabackend.domain.*
+import pl.theliver.cinemabackend.utils.Log
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.logging.Logger
@@ -19,7 +20,7 @@ class DataLoader(
         private val userService: UserService
 ) : CommandLineRunner {
 
-    val logger: Logger = Logger.getLogger(DataLoader::class.java.name)
+    companion object : Log()
 
     fun initMovies() {
         val titles = listOf("Interstellar", "Pulp Fiction", "Kalifornia", "Kramer Vs. Kramer", "Inception",
@@ -32,7 +33,6 @@ class DataLoader(
                 "The film stars Leonardo DiCaprio as a professional thief who steals information by infiltrating the subconscious of his targets.",
                 "The plot revolves around Dylan Harper (Timberlake) and Jamie Rellis (Kunis), who meet in New York City, and naively believe adding sex to their friendship will not lead to complications."
         )
-        val genres = listOf("Action", "Comedy", "Drama", "Fantasy", "Horror", "Science fiction")
         val images = listOf("https://upload.wikimedia.org/wikipedia/en/b/bc/Interstellar_film_poster.jpg",
                 "https://upload.wikimedia.org/wikipedia/en/3/3b/Pulp_Fiction_%281994%29_poster.jpg",
                 "https://upload.wikimedia.org/wikipedia/en/8/8d/Kaliforniaposter.jpg",
@@ -51,7 +51,7 @@ class DataLoader(
             movieService.addMovie(Movie(
                     title = titles[i],
                     description = descriptions[i],
-                    genre = genres[i],
+                    genre = MovieGenre.values()[i].name.replace("_", " "),
                     image = images[i],
                     durationTime = durationTimes[i],
                     releaseDate = releaseDates[i],
@@ -103,7 +103,7 @@ class DataLoader(
         val movies = movieService.getAllMovies()
         val screeningRooms = screeningRoomService.getAllScreeningRooms()
 
-        for (i in 0 until seancesNumber) {
+        (0 until seancesNumber).forEach { i ->
             val movie = movies.random()
             val screeningRoom = screeningRooms.random()
             val seance = Seance(
@@ -127,7 +127,7 @@ class DataLoader(
 
         for (i in seances.indices) {
             val screeningRoom = screeningRoomService.getScreeningRoomById(seances[i].screeningRoomId)
-            for (j in 0 until screeningRoom.placeNumber) {
+            (0 until screeningRoom.placeNumber).forEach { j ->
                 val place = Place(
                         number = j + 1,
                         isReserved = listOf(true, false, false).random(),
@@ -176,7 +176,7 @@ class DataLoader(
         val rates = listOf(5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 3, 3, 3, 2, 2, 2, 1).map { it.toDouble() }
         val movies = movieService.getAllMovies()
 
-        for (i in 0 until ratesNumber) {
+        (0 until ratesNumber).forEach { i ->
             val user = users.random()
             val movie = movies.random()
             val rate = Rate(

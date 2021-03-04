@@ -73,7 +73,7 @@
                                 <p class="mt-2">{{hourOptions[0]}}</p>
                             </ng-template>
                             <ng-template #manyHours class="form-group">
-                                <select class="form-control" [(ngModel)]="reservationDate.hour" (ngModelChange)="preparePlaces()">
+                                <select class="form-control" [(ngModel)]="reservationDate.hour" (ngModelChange)="findSeance()">
                                     <option hidden selected></option>
                                     <option *ngFor="let hour of hourOptions" [value]="hour">{{hour}}</option>
                                 </select> 

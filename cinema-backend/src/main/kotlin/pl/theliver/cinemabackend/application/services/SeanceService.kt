@@ -17,5 +17,6 @@ class SeanceService(
 
     fun getSeanceById(id: String) = seanceRepository.getSeanceById(id)
 
-    fun getSeancesFromMovie(id: String) = seanceRepository.getAllSeances().filter { it.movieId == id }
+    fun getSeancesFromMovie(id: String) = seanceRepository.getAllSeancesByMovieId(id)
+//            seanceRepository.getAllSeances().filter { it.movieId == id }
 }

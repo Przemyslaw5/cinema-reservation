@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Movie, MovieGenre } from '../model/movie';
+import { Movie } from '../model/movie';
 
 export interface Range {
   min: number;
@@ -9,7 +9,7 @@ export interface Range {
 export interface MovieFilterData {
   title: string;
   rate: Range;
-  genre: MovieGenre;
+  genre: string;
   durationTime: Range;
 }
 
@@ -32,7 +32,7 @@ export class FilterMoviePipe implements PipeTransform {
       movies = movies.filter(movie => movie.title.toUpperCase().includes(filter.title.toUpperCase()));
     }
 
-    if (filter.genre && filter.genre && filter.genre.toString() != 'All'){
+    if (filter.genre && filter.genre.toString() != 'All'){
         movies = movies.filter(movie => movie.genre == filter.genre);
     }
 

@@ -29,4 +29,7 @@ class SeanceRepositoryJpa(
     override fun getAllSeances() = seanceCrudRepositoryJpa.findAll().map { it.toDomain() }
 
     override fun getSeanceById(id: String) = seanceCrudRepositoryJpa.findById(id).orElse(null).toDomain()
+
+    override fun getAllSeancesByMovieId(id: String): List<Seance> =
+            seanceCrudRepositoryJpa.getAllSeancesByMovieId(id).map { it.toDomain() }
 }

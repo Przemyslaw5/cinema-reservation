@@ -9,7 +9,7 @@
     <div class="form-group p-4 m-0">
         <label for="MovieGenre">Genre</label>
         <select class="form-control" id="genre" [(ngModel)]="filterObject.genre" (input)="sendFilters()">
-            <!-- <option *ngIf="filterObject.genre == emptyGenre" hidden selected></option> -->
+            <option>All</option>
             <option *ngFor="let option of allOptions" [value]="option">{{option}}</option>
         </select>
     </div>
@@ -27,8 +27,4 @@
     <div class="text-center m-5">
         <button type="button" class="btn btn-dark" (click)="clear()">Reset Filters</button>
     </div>
-
-    <!-- <div class="card-footer text-center">
-        <a [routerLink]="['/movies', movie.id]" class="btn btn-dark">Details</a>
-      </div> -->
 </div>

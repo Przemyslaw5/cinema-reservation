@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Movie } from '../model/movie';
-import { Place, ScreeningRoom } from '../model/reservation';
+import { Place } from '../model/reservation';
+import { ScreeningRoom } from '../model/screeningRoom';
 import { Seance } from '../model/seance';
 
 @Injectable({
@@ -18,24 +19,28 @@ export class CinemaService {
     private httpClient: HttpClient
   ) { }
 
-  getMovies(): Observable<Movie[]> {
-    return this.httpClient.get<Movie[]>(this.DOMAIN + '/movies')
+  public getMovies(): Observable<Movie[]> {
+    return this.httpClient.get<Movie[]>(this.DOMAIN + `/movies`)
   }
 
-  getMovieById(id: string) {
+  public getMovieById(id: string): Observable<Movie> {
     return this.httpClient.get<Movie>(this.DOMAIN + `/movies/${id}`);
   }
 
-  getSeancesFromMovieId(id: string) {
+  public getSeancesFromMovieId(id: string): Observable<Seance[]> {
     return this.httpClient.get<Seance[]>(this.DOMAIN + `/movies/${id}/seances`);
   }
 
-  getScreeningRoom(id: string) {
+  public getScreeningRoom(id: string): Observable<ScreeningRoom> {
     return this.httpClient.get<ScreeningRoom>(this.DOMAIN + `/screening-rooms/${id}`)
   }
 
-  getPlacesFromSeanceId(seanceId: string) {
+  public getPlacesFromSeanceId(seanceId: string): Observable<Place[]> {
     return this.httpClient.get<Place[]>(this.DOMAIN + `/screening-rooms/${seanceId}/places`)
+  }
+
+  public getAllGenres(): Observable<string[]> {
+    return this.httpClient.get<string[]>(this.DOMAIN + `/genres`)
   }
 
 }

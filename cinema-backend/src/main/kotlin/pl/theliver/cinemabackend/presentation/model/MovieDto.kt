@@ -1,13 +1,10 @@
 package pl.theliver.cinemabackend.presentation.model
 
-import pl.theliver.cinemabackend.application.services.RateService
-import pl.theliver.cinemabackend.application.services.SeanceService
 import pl.theliver.cinemabackend.domain.Movie
-import java.time.LocalDate
-import java.util.*
+import java.time.format.DateTimeFormatter
 
 data class MovieDto(
-        val id: String = UUID.randomUUID().toString(),
+        val id: String,
         val title: String,
         val description: String,
         val genre: String,
@@ -15,28 +12,9 @@ data class MovieDto(
         var rate: Double,
         val ratesNumber: Int,
         val durationTime: Int,
-        val releaseDate: LocalDate,
+        val releaseDate: String,
         val director: String
 ) {
-
-    fun toDomain(
-            seanceService: SeanceService,
-            rateService: RateService
-    ) = Movie(
-            id,
-            title,
-            description,
-            genre,
-            image,
-            rate,
-            ratesNumber,
-            durationTime,
-            seanceService.getAllSeances().filter { it.movieId == id }.map { it.id }.toMutableList(),
-            releaseDate,
-            director,
-            rateService.getAllRates().filter { it.movie.id == id }.map { it.id }.toMutableList()
-    )
-
     companion object {
         fun fromDomain(movie: Movie) = with(movie) {
             MovieDto(
@@ -48,7 +26,7 @@ data class MovieDto(
                     rate,
                     ratesNumber,
                     durationTime,
-                    releaseDate,
+                    releaseDate.format(DateTimeFormatter.ISO_DATE_TIME),
                     director
             )
         }
