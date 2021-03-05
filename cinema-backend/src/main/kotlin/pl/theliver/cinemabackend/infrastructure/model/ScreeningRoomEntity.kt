@@ -1,7 +1,6 @@
 package pl.theliver.cinemabackend.infrastructure.model
 
 import pl.theliver.cinemabackend.domain.ScreeningRoom
-import pl.theliver.cinemabackend.domain.Seance
 import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.SeanceCrudRepositoryJpa
 import java.util.*
 import javax.persistence.*

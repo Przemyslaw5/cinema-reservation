@@ -39,7 +39,7 @@ export class ReservationComponent implements OnInit {
 
   constructor(
     private cinemaService: CinemaService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {

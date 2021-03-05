@@ -6,5 +6,5 @@ enum class MovieGenre {
     Drama,
     Fantasy,
     Horror,
-    Science_Fiction
+    ScienceFiction
 }

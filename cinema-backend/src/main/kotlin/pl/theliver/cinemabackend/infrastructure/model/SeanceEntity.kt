@@ -5,7 +5,6 @@ import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.MovieCrudRepos
 import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.ReservationCrudRepositoryJpa
 import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.ScreeningRoomCrudRepositoryJpa
 import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.SeanceCrudRepositoryJpa
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 import javax.persistence.*

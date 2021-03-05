@@ -1,7 +1,6 @@
 package pl.theliver.cinemabackend.presentation.model
 
 import pl.theliver.cinemabackend.domain.User
-import java.util.*
 
 data class UserDto(
         val id: String,

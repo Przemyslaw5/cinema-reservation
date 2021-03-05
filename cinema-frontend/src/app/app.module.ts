@@ -31,7 +31,7 @@ import { ReservationComponent } from './components/reservation/reservation.compo
     FilterMoviePipe,
     LoginComponent,
     RegisterComponent,
-    ReservationComponent
+    ReservationComponent,
   ],
   imports: [
     BrowserModule,

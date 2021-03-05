@@ -43,6 +43,10 @@ export class FilterMovieComponent implements OnInit {
     step: 1
   };
 
+  translate(text: string): string {
+    return text.replace( /([A-Z])/g, " $1" ).slice(1);
+  }
+
   getAllGenres() {
     this.cinemaService.getAllGenres().subscribe(genres => {
       this.allOptions = genres.map(genre => genre.replace("_", " "));

@@ -10,7 +10,7 @@
         <label for="MovieGenre">Genre</label>
         <select class="form-control" id="genre" [(ngModel)]="filterObject.genre" (input)="sendFilters()">
             <option>All</option>
-            <option *ngFor="let option of allOptions" [value]="option">{{option}}</option>
+            <option *ngFor="let option of allOptions" [value]="option">{{translate(option)}}</option>
         </select>
     </div>
 

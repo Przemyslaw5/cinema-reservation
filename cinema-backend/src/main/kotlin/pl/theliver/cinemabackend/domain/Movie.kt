@@ -1,7 +1,6 @@
 package pl.theliver.cinemabackend.domain
 
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.*
 
 data class Movie(

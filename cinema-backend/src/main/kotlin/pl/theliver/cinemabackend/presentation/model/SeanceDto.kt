@@ -2,7 +2,6 @@ package pl.theliver.cinemabackend.presentation.model
 
 import pl.theliver.cinemabackend.application.services.ScreeningRoomService
 import pl.theliver.cinemabackend.domain.Seance
-import java.util.*
 import java.time.format.DateTimeFormatter
 
 data class SeanceDto(
@@ -13,16 +12,16 @@ data class SeanceDto(
         val screeningRoomName: String
 ) {
     companion object {
-        fun fromDomain(seance: Seance,
-                       screeningRoomService: ScreeningRoomService
+        fun fromDomain(
+                seance: Seance,
+                screeningRoomName: String
         ) = with(seance) {
-
-            return@with SeanceDto(
+            SeanceDto(
                     id,
                     startDate.format(DateTimeFormatter.ISO_DATE_TIME),
                     movieId,
                     screeningRoomId,
-                    screeningRoomService.getScreeningRoomById(screeningRoomId).name
+                    screeningRoomName
             )
         }
     }

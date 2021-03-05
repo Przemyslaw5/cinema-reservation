@@ -7,7 +7,6 @@ import pl.theliver.cinemabackend.domain.*
 import pl.theliver.cinemabackend.utils.Log
 import java.time.LocalDate
 import java.time.LocalTime
-import java.util.logging.Logger
 
 @Component
 class DataLoader(
@@ -107,7 +106,7 @@ class DataLoader(
             val movie = movies.random()
             val screeningRoom = screeningRooms.random()
             val seance = Seance(
-                    startDate = LocalDate.of(2021, 3, (1.until(32)).toList().random()).atTime(LocalTime.of(hours.random(), 0)),
+                    startDate = LocalDate.of(2021, 3, (1.until(10)).toList().random()).atTime(LocalTime.of(hours.random(), 0)),
                     places = mutableListOf(),
                     movieId = movie.id,
                     screeningRoomId = screeningRoom.id
@@ -260,7 +259,7 @@ class DataLoader(
     override fun run(vararg args: String?) {
         initMovies()
         initScreeningRooms()
-        initSeances(40)
+        initSeances(200)
         initPlaces()
         initUsers()
         initRates(500)
