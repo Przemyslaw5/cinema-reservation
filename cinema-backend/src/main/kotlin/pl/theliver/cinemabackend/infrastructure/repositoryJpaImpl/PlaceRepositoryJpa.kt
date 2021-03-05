@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component
 import pl.theliver.cinemabackend.application.repositories.PlaceRepository
 import pl.theliver.cinemabackend.domain.Place
 import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.PlaceCrudRepositoryJpa
-import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.RateCrudRepositoryJpa
 import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.ReservationCrudRepositoryJpa
 import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.SeanceCrudRepositoryJpa
 import pl.theliver.cinemabackend.infrastructure.model.PlaceEntity

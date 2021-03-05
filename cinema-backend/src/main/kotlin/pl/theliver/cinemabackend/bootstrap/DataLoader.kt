@@ -4,6 +4,7 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
 import pl.theliver.cinemabackend.application.services.*
 import pl.theliver.cinemabackend.domain.*
+import pl.theliver.cinemabackend.utils.Log
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -18,6 +19,8 @@ class DataLoader(
         private val userService: UserService
 ) : CommandLineRunner {
 
+    companion object : Log()
+
     fun initMovies() {
         val titles = listOf("Interstellar", "Pulp Fiction", "Kalifornia", "Kramer Vs. Kramer", "Inception",
                 "Friends With Benefits")
@@ -29,7 +32,6 @@ class DataLoader(
                 "The film stars Leonardo DiCaprio as a professional thief who steals information by infiltrating the subconscious of his targets.",
                 "The plot revolves around Dylan Harper (Timberlake) and Jamie Rellis (Kunis), who meet in New York City, and naively believe adding sex to their friendship will not lead to complications."
         )
-        val genres = listOf("Action", "Comedy", "Drama", "Fantasy", "Horror", "Science fiction")
         val images = listOf("https://upload.wikimedia.org/wikipedia/en/b/bc/Interstellar_film_poster.jpg",
                 "https://upload.wikimedia.org/wikipedia/en/3/3b/Pulp_Fiction_%281994%29_poster.jpg",
                 "https://upload.wikimedia.org/wikipedia/en/8/8d/Kaliforniaposter.jpg",
@@ -48,14 +50,14 @@ class DataLoader(
             movieService.addMovie(Movie(
                     title = titles[i],
                     description = descriptions[i],
-                    genre = genres[i],
+                    genre = MovieGenre.values()[i].name.replace("_", " "),
                     image = images[i],
                     durationTime = durationTimes[i],
                     releaseDate = releaseDates[i],
                     director = directors[i],
             ))
         }
-        println("Add movies successfully")
+        logger.info("Add movies successfully")
     }
 
     fun initScreeningRooms() {
@@ -91,7 +93,7 @@ class DataLoader(
                     placesPlan = placePlan[i].toMutableList(),
             ))
         }
-        println("Add screening rooms successfully")
+        logger.info("Add screening rooms successfully")
     }
 
     fun initSeances(seancesNumber: Int) {
@@ -100,11 +102,11 @@ class DataLoader(
         val movies = movieService.getAllMovies()
         val screeningRooms = screeningRoomService.getAllScreeningRooms()
 
-        for (i in 0 until seancesNumber) {
+        (0 until seancesNumber).forEach { i ->
             val movie = movies.random()
             val screeningRoom = screeningRooms.random()
             val seance = Seance(
-                    startDate = LocalDate.of(2021, 3, (1.until(32)).toList().random()).atTime(LocalTime.of(hours.random(), 0)),
+                    startDate = LocalDate.of(2021, 3, (1.until(10)).toList().random()).atTime(LocalTime.of(hours.random(), 0)),
                     places = mutableListOf(),
                     movieId = movie.id,
                     screeningRoomId = screeningRoom.id
@@ -115,7 +117,7 @@ class DataLoader(
         movies.map { movieService.addMovie(it) }
         screeningRooms.map { screeningRoomService.addScreeningRoom(it) }
 
-        println("Add seances successfully")
+        logger.info("Add seances successfully")
     }
 
     fun initPlaces() {
@@ -124,20 +126,19 @@ class DataLoader(
 
         for (i in seances.indices) {
             val screeningRoom = screeningRoomService.getScreeningRoomById(seances[i].screeningRoomId)
-            for (j in 0 until screeningRoom.placeNumber) {
-                val seance = seances.random()
+            (0 until screeningRoom.placeNumber).forEach { j ->
                 val place = Place(
                         number = j + 1,
                         isReserved = listOf(true, false, false).random(),
-                        seanceId = seance.id
+                        seanceId = seances[i].id
                 )
                 placeService.addPlace(place)
-                seance.places.add(place)
+                seances[i].places.add(place)
             }
         }
         seances.map { seanceService.addSeance(it) }
 
-        println("Add places successfully")
+        logger.info("Add places successfully")
     }
 
     fun initUsers() {
@@ -165,7 +166,7 @@ class DataLoader(
             ))
         }
 
-        println("Add users successfully")
+        logger.info("Add users successfully")
     }
 
     fun initRates(ratesNumber: Int) {
@@ -174,7 +175,7 @@ class DataLoader(
         val rates = listOf(5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 3, 3, 3, 2, 2, 2, 1).map { it.toDouble() }
         val movies = movieService.getAllMovies()
 
-        for (i in 0 until ratesNumber) {
+        (0 until ratesNumber).forEach { i ->
             val user = users.random()
             val movie = movies.random()
             val rate = Rate(
@@ -189,7 +190,7 @@ class DataLoader(
         users.map { userService.addUser(it) }
         movies.map { movieService.addMovie(it) }
 
-        println("Add rates successfully")
+        logger.info("Add rates successfully")
     }
 
     fun initReservations() {
@@ -236,7 +237,7 @@ class DataLoader(
         }
         users.map { userService.addUser(it) }
 
-        println("Add reservations successfully")
+        logger.info("Add reservations successfully")
     }
 
     fun calculateRatesForEachFilm() {
@@ -252,13 +253,13 @@ class DataLoader(
         }
         movies.map { movieService.addMovie(it) }
 
-        println("Calculate rates for each movie successfully")
+        logger.info("Calculate rates for each movie successfully")
     }
 
     override fun run(vararg args: String?) {
         initMovies()
         initScreeningRooms()
-        initSeances(40)
+        initSeances(200)
         initPlaces()
         initUsers()
         initRates(500)

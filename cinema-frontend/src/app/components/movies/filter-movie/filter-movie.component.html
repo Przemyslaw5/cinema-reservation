@@ -1,57 +1,30 @@
 <div>
-    <div class="form-group">
+    <h2 class="m-5 p-0" style="text-align: center;">Filters</h2>
+
+    <div class="form-group p-4 m-0">
+        <label>Title:</label>
         <input type="text" class="form-control" placeholder="Search movie by phrase" [(ngModel)]="filterObject.title" (input)="sendFilters()" />
     </div>
 
-    <div class="form-group custom-slider" style="margin-left: 50px; margin-right: 50px;">
-        <label>Rating</label>
+    <div class="form-group p-4 m-0">
+        <label for="MovieGenre">Genre</label>
+        <select class="form-control" id="genre" [(ngModel)]="filterObject.genre" (input)="sendFilters()">
+            <option>All</option>
+            <option *ngFor="let option of allOptions" [value]="option">{{translate(option)}}</option>
+        </select>
+    </div>
+
+    <div class="form-group p-4 m-0 custom-slider" style="margin-left: 50px; margin-right: 50px;">
+        <label>Rating:</label>
         <ngx-slider [(value)]="filterObject.rate.min" [(highValue)]="filterObject.rate.max" [options]="rateOptions" (userChange)="sendFilters()"></ngx-slider>
     </div>
 
-
-    <div class="form-group">
-        <label for="MovieGenre">Course Form</label>
-        <select class="form-control" id="genre" [(ngModel)]="filterObject.genre" (input)="sendFilters()">
-            <option *ngIf="filterObject.genre == emptyGenre" hidden selected></option>
-            <option *ngFor="let cf of allOptions" [value]="cf">{{cf}}</option>
-        </select>
+    <div class="form-group p-4 m-0 custom-slider" style="margin-left: 50px; margin-right: 50px;">
+        <label>Duration time:</label>
+        <ngx-slider [(value)]="filterObject.durationTime.min" [(highValue)]="filterObject.durationTime.max" [options]="durationTimeOptions" (userChange)="sendFilters()"></ngx-slider>
     </div>
-
-    <!-- <div class="form-group">
-        <label for="courseForm">Course Form</label>
-        <select class="form-control" formControlName="courseForm" id="courseForm">
-            <option *ngFor="let cf of getCourseFormKeys()" [value]="courseForms[cf]">
-            {{courseForms[cf]}}
-            </option>
-        </select>
-    </div> -->
-
-    <!-- <div class="form-group">
-        Minimal number of ECTS: {{filterObject.minects}}
-        <input type="range" class="form-control custom-range" min="1" max="15" step="1" [(ngModel)]="filterObject.minects" (input)="sendFilters()">
-    </div>
-
-    <div>
-        Maximum number of ECTS: {{filterObject.maxects}}
-        <input type="range" class="form-control custom-range" min="1" max="15" step="1" [(ngModel)]="filterObject.maxects" (input)="sendFilters()">
-    </div>
-
-    <div>
-        Semester: {{filterObject.semester}}
-        <input type="range" class="form-control custom-range" min="1" max="10" step="1" [(ngModel)]="filterObject.semester" (input)="sendFilters()">
-    </div>
-
-    <div class="form-group">
-        Minimal number of stars: {{filterObject.minrate}}
-        <input type="range" class="form-control custom-range" min="1" max="5" step="0.1" [(ngModel)]="filterObject.minrate" (input)="sendFilters()">
-    </div>
-
-    <div>
-        Maximum number of stars: {{filterObject.maxrate}}
-        <input type="range" class="form-control custom-range" min="1" max="5" step="0.1" [(ngModel)]="filterObject.maxrate" (input)="sendFilters()">
-    </div> -->
     
-    <div class="text-center m-4">
-        <button type="button" class="btn btn-primary btn-lg" (click)="clear()">Reset Filters</button>
+    <div class="text-center m-5">
+        <button type="button" class="btn btn-dark" (click)="clear()">Reset Filters</button>
     </div>
 </div>

@@ -5,14 +5,6 @@ export interface Movie {
     image: string;
     rate: number;
     ratesNumber: number;
-    genre: MovieGenre;
+    genre: string;
     durationTime: number;
-}
-
-export enum MovieGenre {
-    Empty,
-    Komedia,
-    Thriller,
-    Przygodowy,
-    Kryminał
 }

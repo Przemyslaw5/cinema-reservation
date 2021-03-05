@@ -27,3 +27,15 @@ li {
     min-width: 250px;
     border-radius: 10px;
   }
+
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  ul li {
+    justify-content: space-between;
+    display: flex;
+}

@@ -6,4 +6,5 @@ interface SeanceRepository {
     fun saveSeance(seance: Seance)
     fun getAllSeances(): List<Seance>
     fun getSeanceById(id: String): Seance
+    fun getAllSeancesByMovieId(id: String): List<Seance>
 }

@@ -1,0 +1,122 @@
+<div class="container-fluid w-75 mt-5">
+    <div class="row">
+        <div class="col-sm-12 color text-center card">
+            <div>
+                <h1 class="p-5 m-0">{{movie.title}}</h1>
+            </div>
+            <div class="row mb-5">
+                <div class="col-md-3">
+                    <div class="mr-4" style="display: inline-block;">
+                        <b>Year:</b>
+                    </div>
+                    <div style="display: inline-block;">
+                        <div class="form-group" *ngIf="yearOptions.length == 1; then oneYear else manyYears"></div>
+                        <ng-template #oneYear> 
+                            <p class="mt-2">{{yearOptions[0]}}</p>
+                        </ng-template>
+                        <ng-template #manyYears class="form-group">
+                            <select class="form-control" [(ngModel)]="reservationDate.year" (ngModelChange)="prepareMonths()">
+                                <option *ngFor="let year of yearOptions" [value]="year">{{year}}</option>
+                            </select> 
+                        </ng-template>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="mr-4" style="display: inline-block;">
+                        <b>Month:</b>
+                    </div>
+                    <div style="display: inline-block;">
+                        <div *ngIf="monthOptions.length > 0">
+                            <div class="form-group" *ngIf="monthOptions.length == 1; then oneMonth else manyMonths"></div>
+                            <ng-template #oneMonth>
+                                <p class="mt-2">{{monthOptions[0]}}</p>
+                            </ng-template>
+                            <ng-template #manyMonths class="form-group">
+                                <select class="form-control" [(ngModel)]="reservationDate.month" (ngModelChange)="prepareDays()">
+                                    <option hidden selected></option>
+                                    <option *ngFor="let month of monthOptions" [value]="month">{{month}}</option>
+                                </select> 
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="mr-4" style="display: inline-block;">
+                        <b>Day:</b>
+                    </div>
+                    <div style="display: inline-block;">
+                        <div *ngIf="dayOptions.length > 0">
+                            <div class="form-group" *ngIf="dayOptions.length == 1; then oneDay else manyDays"></div>
+                            <ng-template #oneDay>
+                                <p class="mt-2">{{dayOptions[0]}}</p>
+                            </ng-template>
+                            <ng-template #manyDays class="form-group">
+                                <select class="form-control" [(ngModel)]="reservationDate.day" (ngModelChange)="prepareHours()">
+                                    <option hidden selected></option>
+                                    <option *ngFor="let day of dayOptions" [value]="day">{{day}}</option>
+                                </select> 
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="mr-4" style="display: inline-block;">
+                        <b>Hour:</b>
+                    </div>
+                    <div style="display: inline-block;">
+                        <div *ngIf="hourOptions.length > 0">
+                            <div class="form-group" *ngIf="hourOptions.length == 1; then oneHour else manyHours"></div>
+                            <ng-template #oneHour>
+                                <p class="mt-2">{{hourOptions[0]}}</p>
+                            </ng-template>
+                            <ng-template #manyHours class="form-group">
+                                <select class="form-control" [(ngModel)]="reservationDate.hour" (ngModelChange)="findSeance()">
+                                    <option hidden selected></option>
+                                    <option *ngFor="let hour of hourOptions" [value]="hour">{{hour}}</option>
+                                </select> 
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12" *ngIf="reservationDate.hour != ''">
+
+                <div class="col-md-12 my-5">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div style="display: inline-block;"><button type="button" class="btn btn-dark buttonShape"></button></div>
+                            <div class="ml-2" style="display: inline-block;"><b> - You can reservate this place</b></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div style="display: inline-block;"><button type="button" class="btn btn-success buttonShape"></button></div>
+                            <div class="ml-2" style="display: inline-block;"><b> - Place chose by you</b></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div style="display: inline-block;"><button type="button" class="btn btn-secondary disabled cursor-disabled buttonShape"></button></div>
+                            <div class="ml-2" style="display: inline-block;"><b> - This place is already reserved</b></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="center">
+                    <table class='table' style="width: 100%;">
+                        <tbody>
+                          <tr *ngFor="let row of placefForTemplate; index as i">
+                            <td *ngFor="let place of row; index as j" class="px-0">
+                                <div *ngIf="place.number != ' '">
+                                    <button *ngIf="place.isReserved == 1" type="button" class="btn btn-secondary disabled cursor-disabled buttonShape" (click)="clickSeat(i, j)">{{place.number}}</button> 
+                                    <button *ngIf="place.isReserved == 0" type="button" class="btn btn-dark buttonShape" (click)="clickSeat(i, j)">{{place.number}}</button> 
+                                    <button *ngIf="place.isReserved == 2" type="button" class="btn btn-success buttonShape" (click)="clickSeat(i, j)">{{place.number}}</button> 
+                                </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

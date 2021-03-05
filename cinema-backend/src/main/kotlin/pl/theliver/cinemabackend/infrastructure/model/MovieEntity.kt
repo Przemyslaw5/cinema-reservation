@@ -6,7 +6,6 @@ import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.SeanceCrudRepo
 import java.time.LocalDate
 import java.util.*
 import javax.persistence.Entity
-import javax.persistence.FetchType
 import javax.persistence.Id
 import javax.persistence.OneToMany
 

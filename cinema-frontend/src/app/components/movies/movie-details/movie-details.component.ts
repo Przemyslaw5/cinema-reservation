@@ -3,7 +3,6 @@ import { Movie } from 'src/app/model/movie';
 import { ActivatedRoute } from '@angular/router';
 import { CinemaService } from 'src/app/services/cinema.service';
 
-
 @Component({
   selector: 'app-movie-details',
   templateUrl: './movie-details.component.html',
