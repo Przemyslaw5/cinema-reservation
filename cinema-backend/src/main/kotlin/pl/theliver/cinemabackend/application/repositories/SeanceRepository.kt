@@ -7,5 +7,4 @@ interface SeanceRepository {
     fun getAllSeances(): List<Seance>
     fun getSeanceById(id: String): Seance
     fun getAllSeancesByMovieId(id: String): List<Seance>
-    fun getAllSeancesByMovieIdAndDictForRoom(id: String): Pair<List<Seance>, Map<String, String>>
 }

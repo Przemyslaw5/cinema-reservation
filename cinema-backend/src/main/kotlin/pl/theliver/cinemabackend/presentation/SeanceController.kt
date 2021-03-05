@@ -18,6 +18,8 @@ class SeanceController(
     @GetMapping("/movies/{id}/seances")
     fun getSeancesFromMovieId(@PathVariable("id") id: String): List<SeanceDto> {
         val data = seanceService.getSeancesByMovieIdAndDictForRoom(id)
-        return data.first.map { SeanceDto.fromDomain(it, data.second[it.screeningRoomId]!!) }
+        val seances = data.first
+        val namesDict = data.second
+        return seances.map { SeanceDto.fromDomain(it, namesDict[it.screeningRoomId]!!) }
     }
 }
