@@ -1,7 +1,8 @@
 import { PlatformLocation } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { User } from 'src/app/model/user';
+import { UserReservation } from 'src/app/model/userReservation';
 import { CinemaService } from 'src/app/services/cinema.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-user-reservations',
@@ -10,25 +11,21 @@ import { CinemaService } from 'src/app/services/cinema.service';
 })
 export class UserReservationsComponent implements OnInit {
 
-  user!: User;
+  username?: string;
+  reservations?: UserReservation[];
 
   constructor(
-    private cinemaService: CinemaService
+    private cinemaService: CinemaService,
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
-    this.getData()
+    this.getReservations()
   }
 
-  getData() {
-    this.user = { 
-      id: "es",
-      username: "ease",
-      leadingQuestion: "ease",
-      leadingAnswer: "DAsda"
-    }
-    this.cinemaService.getAllReservationsForUser(this.user).subscribe(() => {
-      console.log("Get reservations from user successfully")
+  getReservations() {
+    this.cinemaService.getAllReservationsForUser(this.userService.getUsername()!).subscribe(reservations => {
+      this.reservations = reservations;
     }
     , error => {
       console.log(error)

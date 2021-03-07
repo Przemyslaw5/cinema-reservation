@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { User } from '../model/user';
 
@@ -12,10 +12,11 @@ export class UserService {
 
   DOMAIN = environment.apiBase;
 
-  user?: User;
+  username?: string;
 
   constructor(
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private router: Router
   ) { }
 
   register(user: User) {
@@ -26,11 +27,23 @@ export class UserService {
     return this.httpClient.post<boolean>(this.DOMAIN + '/login', user);
   }
 
-  setUser(user: User){
-    this.user = user
+  setUsername(username: string){
+    this.username = username
+    localStorage['username'] = username;
   }
 
   isLogged() {
-    return this.user != undefined
+    this.username = localStorage['username']
+    return this.username != null
+  }
+
+  getUsername() {
+    return this.username
+  }
+
+  logout() {
+    this.username = undefined
+    localStorage.removeItem('username')
+    this.router.navigate(["/movies"])
   }
 }

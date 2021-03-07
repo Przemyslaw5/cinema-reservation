@@ -8,5 +8,5 @@ import pl.theliver.cinemabackend.infrastructure.model.UserEntity
 
 @Repository
 interface ReservationCrudRepositoryJpa : CrudRepository<ReservationEntity, String> {
-//    fun getAllReservationByUserEntity(user: UserEntity): List<ReservationEntity>
+    fun getAllReservationByUser(user: UserEntity): List<ReservationEntity>
 }

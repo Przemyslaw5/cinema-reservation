@@ -106,7 +106,8 @@ class DataLoader(
             val movie = movies.random()
             val screeningRoom = screeningRooms.random()
             val seance = Seance(
-                    startDate = LocalDate.of(2021, 3, (1.until(10)).toList().random()).atTime(LocalTime.of(hours.random(), 0)),
+                    startDate = LocalDate.of(2021, 3, (1.until(10)).toList().random())
+                            .atTime(LocalTime.of(hours.random(), 0)),
                     places = mutableListOf(),
                     movieId = movie.id,
                     screeningRoomId = screeningRoom.id
@@ -162,7 +163,7 @@ class DataLoader(
             userService.addUser(User(
                     username = element,
                     leadingQuestion = leadingQuestions.random(),
-                    leadingAnswer = leadingQuestions.random()
+                    leadingAnswer = leadingAnswers.random()
             ))
         }
 
@@ -214,7 +215,8 @@ class DataLoader(
                         val reservation = Reservation(
                                 user = user,
                                 places = userPlaces,
-                                secretWord = secretWords.random()
+                                secretWord = secretWords.random(),
+                                seance = element
                         )
                         reservationService.addReservation(reservation)
                         user = users.random()
@@ -222,20 +224,24 @@ class DataLoader(
                         userPlaces.map { placeService.addPlace(it) }
                         user.reservationsIds.add(reservation.id)
                         userPlaces = mutableListOf()
+                        element.reservationsIds.add(reservation.id)
                     }
                 }
             }
             val reservation = Reservation(
                     user = user,
                     places = userPlaces,
-                    secretWord = secretWords.random()
+                    secretWord = secretWords.random(),
+                    seance = element
             )
             reservationService.addReservation(reservation)
             userPlaces.map { it.reservationId = reservation.id }
             userPlaces.map { placeService.addPlace(it) }
             user.reservationsIds.add(reservation.id)
+            element.reservationsIds.add(reservation.id)
         }
         users.map { userService.addUser(it) }
+        seances.map { seanceService.addSeance(it) }
 
         logger.info("Add reservations successfully")
     }

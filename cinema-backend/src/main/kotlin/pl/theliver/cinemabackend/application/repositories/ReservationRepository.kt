@@ -7,5 +7,5 @@ interface ReservationRepository {
     fun saveReservation(reservation: Reservation)
     fun getAllReservations(): List<Reservation>
     fun getReservationById(id: String): Reservation
-//    fun getReservationByUser(user: User): List<Reservation>
+    fun getReservationByUser(user: User): List<Reservation>
 }

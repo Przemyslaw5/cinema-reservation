@@ -3,10 +3,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LEADING_QUESTIONS } from 'src/app/model/question';
 import { User } from 'src/app/model/user';
 import { UserService } from 'src/app/services/user.service';
-
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { RegisterComponent } from '../register/register.component';
 
 @Component({
@@ -37,23 +34,17 @@ export class LoginComponent implements OnInit {
     answer: new FormControl('', [Validators.required])
   })
 
-
-
-
   constructor(
     public activeModal: NgbActiveModal,
     private userService: UserService,
     private modalService: NgbModal
   ) { }
 
-
   ngOnInit(): void {
-    // this.register()
     console.log(this.modelForm.get('password')?.errors)
   }
 
-  login(){
-    
+  public login(){
     this.user = {
       id: "",
       username: this.modelForm.value.username,
@@ -65,7 +56,7 @@ export class LoginComponent implements OnInit {
       console.log("Successfully login")
       this.badLogin = false;
       this.activeModal.dismiss('Cross click');
-      this.userService.setUser(this.user)
+      this.userService.setUsername(this.user.username)
     }
     , error => {
       this.modelForm.reset();
@@ -75,13 +66,8 @@ export class LoginComponent implements OnInit {
 
   }
 
-
-  changeToRegister(){
+  public changeToRegister(){
     this.activeModal.dismiss('Cross click');
     const modalRef = this.modalService.open(RegisterComponent);
-    // modalRef.componentInstance.rate = rate;
   }
-
-
-
 }

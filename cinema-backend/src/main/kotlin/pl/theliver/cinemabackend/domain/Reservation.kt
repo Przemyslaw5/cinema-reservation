@@ -6,5 +6,6 @@ data class Reservation(
         val id: String = UUID.randomUUID().toString(),
         var user: User,
         var places: List<Place>,
-        var secretWord: String
+        var secretWord: String,
+        val seance: Seance
 )

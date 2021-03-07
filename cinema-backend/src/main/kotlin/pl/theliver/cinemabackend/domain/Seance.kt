@@ -8,5 +8,6 @@ data class Seance(
         val startDate: LocalDateTime,
         val places: MutableList<Place>,
         val movieId: String,
-        val screeningRoomId: String
+        val screeningRoomId: String,
+        var reservationsIds: MutableList<String> = mutableListOf()
 )

@@ -1,4 +1,4 @@
-package pl.theliver.cinemabackend.presentation
+package pl.theliver.cinemabackend.presentation.controllers
 
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping

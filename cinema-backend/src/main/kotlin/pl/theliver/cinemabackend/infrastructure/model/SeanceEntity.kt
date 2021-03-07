@@ -1,10 +1,7 @@
 package pl.theliver.cinemabackend.infrastructure.model
 
 import pl.theliver.cinemabackend.domain.*
-import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.MovieCrudRepositoryJpa
-import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.ReservationCrudRepositoryJpa
-import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.ScreeningRoomCrudRepositoryJpa
-import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.SeanceCrudRepositoryJpa
+import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.*
 import java.time.LocalDateTime
 import java.util.*
 import javax.persistence.*
@@ -22,8 +19,18 @@ data class SeanceEntity(
         @ManyToOne
         @JoinColumn(name = "screening_room_id")
         var screeningRoom: ScreeningRoomEntity,
+        @OneToMany(mappedBy = "seance")
+        var reservations: List<ReservationEntity> = emptyList()
+
 ) {
-    fun toDomain() = Seance(id, startDate, places.map { it.toDomain() }.toMutableList(), movie.id, screeningRoom.id)
+    fun toDomain() = Seance(
+            id,
+            startDate,
+            places.map { it.toDomain() }.toMutableList(),
+            movie.id,
+            screeningRoom.id,
+            reservations.map { it.id }.toMutableList()
+    )
 
     companion object {
         fun fromDomain(
@@ -31,14 +38,16 @@ data class SeanceEntity(
                 movieCrudRepositoryJpa: MovieCrudRepositoryJpa,
                 screeningRoomCrudRepositoryJpa: ScreeningRoomCrudRepositoryJpa,
                 seanceCrudRepositoryJpa: SeanceCrudRepositoryJpa,
-                reservationCrudRepositoryJpa: ReservationCrudRepositoryJpa
+                reservationCrudRepositoryJpa: ReservationCrudRepositoryJpa,
         ) = with(seance) {
             SeanceEntity(
                     id,
                     startDate,
                     places.map { PlaceEntity.fromDomain(it, seanceCrudRepositoryJpa, reservationCrudRepositoryJpa) },
                     movieCrudRepositoryJpa.findById(movieId).get(),
-                    screeningRoomCrudRepositoryJpa.findById(screeningRoomId).get()
+                    screeningRoomCrudRepositoryJpa.findById(screeningRoomId).get(),
+                    reservationsIds.map { reservationCrudRepositoryJpa.findById(it).get() }
+
             )
         }
     }

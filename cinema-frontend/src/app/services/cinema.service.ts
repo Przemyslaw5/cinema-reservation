@@ -4,10 +4,9 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Movie } from '../model/movie';
 import { Place } from '../model/place';
-import { Reservation } from '../model/reservation';
 import { ScreeningRoom } from '../model/screeningRoom';
 import { Seance } from '../model/seance';
-import { User } from '../model/user';
+import { UserReservation } from '../model/userReservation';
 
 @Injectable({
   providedIn: 'root'
@@ -45,8 +44,8 @@ export class CinemaService {
     return this.httpClient.get<string[]>(this.DOMAIN + `/genres`)
   }
 
-  public getAllReservationsForUser(user: User): Observable<Reservation[]> {
-    return this.httpClient.get<Reservation[]>(this.DOMAIN + `/reservations`)
+  public getAllReservationsForUser(username: string): Observable<UserReservation[]> {
+    return this.httpClient.post<UserReservation[]>(this.DOMAIN + `/reservations`, username)
   }
 
 }

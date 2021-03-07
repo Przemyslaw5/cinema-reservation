@@ -1,1 +1,41 @@
-<p>user-reservations works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 mt-5 reservations"> 
+            <!-- <div class="row justify-content-center align-items-center">
+                <app-movie class="col-sm-4 col-md-3 m-2 p-3 zebra-card" *ngFor="let movie of (movies | filterMovie: filterObject)" [movie]="movie"></app-movie>
+            </div> -->
+            <div class="row">
+                <div class="col-md-12 py-5">
+                    <h1>Your reservations</h1>
+                </div>
+                <div class="col-md-12">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width: 200px;">Title</th>
+                                <th style="width: 200px;">Screening Room Name</th>
+                                <th style="width: 200px;">Date</th>
+                                <th style="width: 200px;">Places</th>
+                                <th style="width: 200px;">Secret Word</th>
+                            </tr>
+                        </thead>
+                    
+                        <tbody>
+                            <tr *ngFor="let reservation of reservations">
+                                <td>{{reservation.title}}</td>
+                                <td>{{reservation.screeningRoomName}}</td>
+                                <td>{{reservation.date}}</td>
+                                <td>
+                                    <div *ngFor="let place of reservation.places" style="display: inline-block;">
+                                        <button class="btn btn-success disabled cursor-disabled buttonShape">{{place}}</button>   
+                                    </div>
+                                </td>
+                                <td>{{reservation.secretWord}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

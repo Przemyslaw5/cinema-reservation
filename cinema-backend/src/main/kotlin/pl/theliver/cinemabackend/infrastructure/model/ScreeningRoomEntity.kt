@@ -25,7 +25,8 @@ data class ScreeningRoomEntity(
     )
 
     companion object {
-        fun fromDomain(screeningRoom: ScreeningRoom, seanceCrudRepositoryJpa: SeanceCrudRepositoryJpa) = with(screeningRoom) {
+        fun fromDomain(screeningRoom: ScreeningRoom, seanceCrudRepositoryJpa: SeanceCrudRepositoryJpa) =
+                with(screeningRoom) {
             ScreeningRoomEntity(
                     id,
                     name,

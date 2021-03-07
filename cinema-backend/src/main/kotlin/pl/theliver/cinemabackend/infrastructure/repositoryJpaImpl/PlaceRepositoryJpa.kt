@@ -15,7 +15,11 @@ class PlaceRepositoryJpa(
         private val reservationCrudRepositoryJpa: ReservationCrudRepositoryJpa
 ) : PlaceRepository {
     override fun savePlace(place: Place) {
-        placeCrudRepositoryJpa.save(PlaceEntity.fromDomain(place, seanceCrudRepositoryJpa, reservationCrudRepositoryJpa))
+        placeCrudRepositoryJpa.save(PlaceEntity.fromDomain(
+                place,
+                seanceCrudRepositoryJpa,
+                reservationCrudRepositoryJpa
+        ))
     }
 
     override fun getAllPlaces() = placeCrudRepositoryJpa.findAll().map { it.toDomain() }

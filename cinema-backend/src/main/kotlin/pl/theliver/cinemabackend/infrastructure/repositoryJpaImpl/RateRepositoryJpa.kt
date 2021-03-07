@@ -15,7 +15,12 @@ class RateRepositoryJpa(
         private val seanceCrudRepositoryJpa: SeanceCrudRepositoryJpa
         ) : RateRepository {
     override fun saveRate(rate: Rate) {
-        rateCrudRepositoryJpa.save(RateEntity.fromDomain(rate, rateCrudRepositoryJpa, reservationCrudRepositoryJpa, seanceCrudRepositoryJpa))
+        rateCrudRepositoryJpa.save(RateEntity.fromDomain(
+                rate,
+                rateCrudRepositoryJpa,
+                reservationCrudRepositoryJpa,
+                seanceCrudRepositoryJpa
+        ))
     }
 
     override fun getAllRates() = rateCrudRepositoryJpa.findAll().map { it.toDomain() }
