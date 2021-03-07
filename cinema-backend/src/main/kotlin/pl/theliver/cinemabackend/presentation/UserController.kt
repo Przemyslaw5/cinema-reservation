@@ -24,6 +24,18 @@ class UserController(
 
     @PostMapping(path = ["/register"])
     fun registerNewUser(@RequestBody userDto: UserDto): ResponseEntity<Boolean?>? {
+        println("EASEASE")
+        println(userDto)
+        val isCrated = userService.createUserIfNotExist(userDto.createNewUser())
+
+        if (isCrated) {
+            return ResponseEntity(true, HttpStatus.OK)
+        }
+        else {
+            throw ResponseStatusException(
+                    HttpStatus.CONFLICT, "User already exists with this username"
+            )
+        }
 
 //        val user = userService.getUserByUsername(userDto.username)
 //
@@ -31,20 +43,19 @@ class UserController(
 //            userService.addUser(userDto.toDomain())
 //            return ResponseEntity(true, HttpStatus.OK)
 //        } else {
-            throw ResponseStatusException(
-                    HttpStatus.CONFLICT, "User already exists with this username"
-            )
+//            throw ResponseStatusException(
+//                    HttpStatus.CONFLICT, "User already exists with this username"
+//            )
 //        }
     }
 
     @PostMapping(path = ["/login"])
     fun login(@RequestBody userDto: UserDto): ResponseEntity<Boolean?>? {
+        val user = userService.getUserByUsername(userDto.username)
 
-//        val user = userService.getUserByUsername(userDto.username)
-//
-//        if (user != null && user == userDto.toDomain()) {
-//            return ResponseEntity(true, HttpStatus.OK)
-//        }
+        if (user != null && UserDto.fromDomain(user) == userDto) {
+            return ResponseEntity(true, HttpStatus.OK)
+        }
         throw ResponseStatusException(
                 HttpStatus.CONFLICT, "Login or answer is incorrect! Mayby you choose other question?"
         )

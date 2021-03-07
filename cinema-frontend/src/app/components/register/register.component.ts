@@ -39,6 +39,7 @@ export class RegisterComponent implements OnInit {
   register(){
     
     this.user = {
+      id: "papito",
       username: this.modelForm.value.username,
       leadingQuestion: this.modelForm.value.question,
       leadingAnswer: this.modelForm.value.answer
@@ -48,6 +49,7 @@ export class RegisterComponent implements OnInit {
       console.log("Add new user successfully")
       this.badRegister = false;
       this.activeModal.dismiss('Cross click');
+      this.userService.setUser(this.user)
     }
     , error => {
       this.modelForm.reset();

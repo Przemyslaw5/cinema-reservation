@@ -12,6 +12,9 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/movies" href="#">Movies</a>
         </li>
+        <li class="nav-item" *ngIf="userIsLogged()">
+          <a class="nav-link" routerLink="/reservations" href="#">MyReservations</a>
+        </li>
         <!-- <li class="nav-item">
           <a class="nav-link disabled" href="#">Disabled</a>
         </li> -->

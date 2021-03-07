@@ -12,6 +12,8 @@ export class UserService {
 
   DOMAIN = environment.apiBase;
 
+  user?: User;
+
   constructor(
     private httpClient: HttpClient
   ) { }
@@ -22,5 +24,13 @@ export class UserService {
   
   login(user: User) {
     return this.httpClient.post<boolean>(this.DOMAIN + '/login', user);
+  }
+
+  setUser(user: User){
+    this.user = user
+  }
+
+  isLogged() {
+    return this.user != undefined
   }
 }

@@ -12,7 +12,6 @@ import pl.theliver.cinemabackend.presentation.model.SeanceDto
 @CrossOrigin
 class SeanceController(
         private val seanceService: SeanceService,
-        private val screeningRoomService: ScreeningRoomService
 ) {
 
     @GetMapping("/movies/{id}/seances")

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Movie } from 'src/app/model/movie';
 import { ActivatedRoute } from '@angular/router';
 import { CinemaService } from 'src/app/services/cinema.service';
-import { Place } from 'src/app/model/reservation';
+import { Place } from 'src/app/model/place';
 import { Seance } from 'src/app/model/seance';
 import { ScreeningRoom } from 'src/app/model/screeningRoom';
 import { ReservedType } from 'src/app/model/reservedType';

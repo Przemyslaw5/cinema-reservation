@@ -18,6 +18,7 @@ import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ReservationComponent } from './components/reservation/reservation.component';
+import { UserReservationsComponent } from './components/user-reservations/user-reservations.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { ReservationComponent } from './components/reservation/reservation.compo
     LoginComponent,
     RegisterComponent,
     ReservationComponent,
+    UserReservationsComponent,
   ],
   imports: [
     BrowserModule,

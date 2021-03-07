@@ -55,6 +55,7 @@ export class LoginComponent implements OnInit {
   login(){
     
     this.user = {
+      id: "",
       username: this.modelForm.value.username,
       leadingQuestion: this.modelForm.value.question,
       leadingAnswer: this.modelForm.value.answer
@@ -64,6 +65,7 @@ export class LoginComponent implements OnInit {
       console.log("Successfully login")
       this.badLogin = false;
       this.activeModal.dismiss('Cross click');
+      this.userService.setUser(this.user)
     }
     , error => {
       this.modelForm.reset();

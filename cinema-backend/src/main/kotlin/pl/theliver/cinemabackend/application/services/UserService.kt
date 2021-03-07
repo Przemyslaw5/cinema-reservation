@@ -18,4 +18,12 @@ class UserService(
     fun getUserById(id: String) = userRepositoryJpa.getUserById(id)
 
     fun getUserByUsername(username: String) = userRepositoryJpa.getUserByUsername(username)
+
+    fun createUserIfNotExist(newUser: User): Boolean {
+        val user = getUserByUsername(newUser.username)
+        if (user == null) {
+            addUser(newUser)
+        }
+        return user == null;
+    }
 }

@@ -3,9 +3,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Movie } from '../model/movie';
-import { Place } from '../model/reservation';
+import { Place } from '../model/place';
+import { Reservation } from '../model/reservation';
 import { ScreeningRoom } from '../model/screeningRoom';
 import { Seance } from '../model/seance';
+import { User } from '../model/user';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +43,10 @@ export class CinemaService {
 
   public getAllGenres(): Observable<string[]> {
     return this.httpClient.get<string[]>(this.DOMAIN + `/genres`)
+  }
+
+  public getAllReservationsForUser(user: User): Observable<Reservation[]> {
+    return this.httpClient.get<Reservation[]>(this.DOMAIN + `/reservations`)
   }
 
 }

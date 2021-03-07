@@ -1,8 +1,7 @@
-import { Place } from "./place";
 import { ReservedType } from "./reservedType";
 
-export interface Reservation {
+export interface Place {
     id: string;
-    places: Array<Place>;
+    number: string;
     isReserved: ReservedType;
 }
