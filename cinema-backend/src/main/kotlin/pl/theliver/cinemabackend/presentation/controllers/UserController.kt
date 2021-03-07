@@ -37,7 +37,7 @@ class UserController(
 
         return when {
             user == null -> {
-                ResponseEntity(true, HttpStatus.NO_CONTENT)
+                ResponseEntity(HttpStatus.NO_CONTENT)
             }
             UserDto.fromDomain(user) == userDto -> {
                 ResponseEntity(true, HttpStatus.OK)
