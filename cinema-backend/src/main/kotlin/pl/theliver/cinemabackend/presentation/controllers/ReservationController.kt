@@ -17,15 +17,14 @@ class ReservationController(
     @PostMapping("/reservations")
     fun getReservationsFromUser(@RequestBody username: String): ResponseEntity<List<ReservationDto>> {
 
-        val data = reservationService.getAllReservationFromUser(userService.getUserByUsername(username)!!)
-        val reservations = data.first
-        val namesDict = data.second
+        val (reservations, movieTitleDict, screeningRoomNamesDict) =
+                reservationService.getAllReservationsByUserId(userService.getUserByUsername(username)!!.id)
 
         return ResponseEntity(
                 reservations.map { ReservationDto.fromDomain(
                         it,
-                        namesDict[it.seance.movieId]!!,
-                        namesDict[it.seance.screeningRoomId]!!) },
+                        movieTitleDict[it.seance.movieId]!!,
+                        screeningRoomNamesDict[it.seance.screeningRoomId]!!) },
                 HttpStatus.OK
         )
     }

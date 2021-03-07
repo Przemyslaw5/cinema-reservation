@@ -35,11 +35,17 @@ class UserController(
     fun login(@RequestBody userDto: UserDto): ResponseEntity<Boolean?>? {
         val user = userService.getUserByUsername(userDto.username)
 
-        if (user != null && UserDto.fromDomain(user) == userDto) {
-            return ResponseEntity(true, HttpStatus.OK)
+        return when {
+            user == null -> {
+                ResponseEntity(true, HttpStatus.NO_CONTENT)
+            }
+            UserDto.fromDomain(user) == userDto -> {
+                ResponseEntity(true, HttpStatus.OK)
+            }
+            else -> throw ResponseStatusException(
+                    HttpStatus.CONFLICT, "Login or answer is incorrect! Maybe you choose other question?"
+            )
         }
-        throw ResponseStatusException(
-                HttpStatus.CONFLICT, "Login or answer is incorrect! Maybe you choose other question?"
-        )
+
     }
 }

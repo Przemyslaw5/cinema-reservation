@@ -19,29 +19,29 @@ export class UserService {
     private router: Router
   ) { }
 
-  register(user: User) {
+  public register(user: User) {
     return this.httpClient.post<boolean>(this.DOMAIN + '/register', user);
   }
   
-  login(user: User) {
+  public login(user: User) {
     return this.httpClient.post<boolean>(this.DOMAIN + '/login', user);
   }
 
-  setUsername(username: string){
+  public setUsername(username: string){
     this.username = username
     localStorage['username'] = username;
   }
 
-  isLogged() {
+  public isLogged() {
     this.username = localStorage['username']
     return this.username != null
   }
 
-  getUsername() {
+  public getUsername() {
     return this.username
   }
 
-  logout() {
+  public logout() {
     this.username = undefined
     localStorage.removeItem('username')
     this.router.navigate(["/movies"])

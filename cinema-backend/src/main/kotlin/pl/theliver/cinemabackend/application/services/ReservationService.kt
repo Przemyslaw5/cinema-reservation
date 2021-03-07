@@ -23,12 +23,11 @@ class ReservationService(
 
     fun getReservationById(id: String) = reservationRepository.getReservationById(id)
 
-    fun getAllReservationFromUser(user: User): Pair<List<Reservation>, Map<String, String>> {
-        val map = movieRepository.getAllMovies().map { it.id to it.title }.toMap().toMutableMap()
-        map.putAll(screeningRoomRepository.getAllScreeningRooms().map { it.id to it.name })
-        return Pair(
-                reservationRepository.getReservationByUser(user),
-                map
+    fun getAllReservationsByUserId(id: String): Triple<List<Reservation>, Map<String, String>, Map<String, String>> {
+        return Triple(
+                reservationRepository.getReservationByUserId(id),
+                movieRepository.getAllMovies().map { it.id to it.title }.toMap(),
+                screeningRoomRepository.getAllScreeningRooms().map { it.id to it.name }.toMap()
         )
     }
 }

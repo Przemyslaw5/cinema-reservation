@@ -3,10 +3,8 @@ package pl.theliver.cinemabackend.infrastructure.repositoryJpaImpl
 import org.springframework.stereotype.Component
 import pl.theliver.cinemabackend.application.repositories.ReservationRepository
 import pl.theliver.cinemabackend.domain.Reservation
-import pl.theliver.cinemabackend.domain.User
 import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.*
 import pl.theliver.cinemabackend.infrastructure.model.ReservationEntity
-import pl.theliver.cinemabackend.infrastructure.model.UserEntity
 
 @Component
 class ReservationRepositoryJpa(
@@ -32,8 +30,6 @@ class ReservationRepositoryJpa(
     override fun getReservationById(id: String) =
             reservationCrudRepositoryJpa.findById(id).orElse(null).toDomain()
 
-    override fun getReservationByUser(user: User) =
-            reservationCrudRepositoryJpa.getAllReservationByUser(
-                    UserEntity.fromDomain(user, reservationCrudRepositoryJpa, rateCrudRepositoryJpa))
-                    .map { it.toDomain() }
+    override fun getReservationByUserId(id: String) =
+            reservationCrudRepositoryJpa.getAllReservationByUserId(id).map { it.toDomain() }
 }

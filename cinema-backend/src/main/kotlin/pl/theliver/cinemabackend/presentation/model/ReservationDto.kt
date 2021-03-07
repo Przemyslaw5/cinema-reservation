@@ -28,11 +28,3 @@ class ReservationDto(
         }
     }
 }
-
-/*
-data z godzina
-git miejsca
-git sekretne słowo
-nazwa filmu
-nazwa sali
- */
