@@ -1,6 +1,5 @@
 package pl.theliver.cinemabackend.presentation.model
 
-import pl.theliver.cinemabackend.application.services.ScreeningRoomService
 import pl.theliver.cinemabackend.domain.Seance
 import java.time.format.DateTimeFormatter
 

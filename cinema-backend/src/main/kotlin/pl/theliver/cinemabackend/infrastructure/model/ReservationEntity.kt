@@ -1,9 +1,7 @@
 package pl.theliver.cinemabackend.infrastructure.model
 
 import pl.theliver.cinemabackend.domain.Reservation
-import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.RateCrudRepositoryJpa
-import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.ReservationCrudRepositoryJpa
-import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.SeanceCrudRepositoryJpa
+import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.*
 import java.util.*
 import javax.persistence.*
 
@@ -16,13 +14,17 @@ data class ReservationEntity(
         var user: UserEntity,
         @OneToMany(mappedBy = "reservation")
         var places: List<PlaceEntity>,
-        var secretWord: String
+        var secretWord: String,
+        @ManyToOne
+        @JoinColumn(name = "seance_id")
+        val seance: SeanceEntity
 ) {
     fun toDomain() = Reservation(
             id = id,
             user = user.toDomain(),
             places = places.map { it.toDomain() },
-            secretWord = secretWord
+            secretWord = secretWord,
+            seance = seance.toDomain()
     )
 
     companion object {
@@ -30,7 +32,9 @@ data class ReservationEntity(
                 reservation: Reservation,
                 reservationCrudRepositoryJpa: ReservationCrudRepositoryJpa,
                 rateCrudRepositoryJpa: RateCrudRepositoryJpa,
-                seanceCrudRepositoryJpa: SeanceCrudRepositoryJpa
+                seanceCrudRepositoryJpa: SeanceCrudRepositoryJpa,
+                movieCrudRepositoryJpa: MovieCrudRepositoryJpa,
+                screeningRoomCrudRepositoryJpa: ScreeningRoomCrudRepositoryJpa
         ) = with(reservation) {
             ReservationEntity(
                     id,
@@ -39,7 +43,14 @@ data class ReservationEntity(
                         PlaceEntity.fromDomain(it, seanceCrudRepositoryJpa,
                                 reservationCrudRepositoryJpa)
                     },
-                    secretWord
+                    secretWord,
+                    SeanceEntity.fromDomain(
+                            seance,
+                            movieCrudRepositoryJpa,
+                            screeningRoomCrudRepositoryJpa,
+                            seanceCrudRepositoryJpa,
+                            reservationCrudRepositoryJpa
+                    )
             )
         }
     }

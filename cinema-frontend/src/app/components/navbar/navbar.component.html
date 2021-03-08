@@ -12,13 +12,33 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/movies" href="#">Movies</a>
         </li>
-        <!-- <li class="nav-item">
-          <a class="nav-link disabled" href="#">Disabled</a>
-        </li> -->
+        <li class="nav-item" *ngIf="isLogged()">
+          <a class="nav-link" routerLink="/reservations" href="#">MyReservations</a>
+        </li>
       </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
+
+      <ul *ngIf="!isLogged()" class="nav navbar-nav flex-row justify-content-between ml-auto">
+        <li class="pr-3">
+            <button type="button" class="btn btn-secondary" (click)="login()">Login</button>
+        </li>
+        <li>
+          <button type="button" class="btn btn-secondary" (click)="register()">Sign up</button>
+        </li>
+    </ul>
+
+    <ul *ngIf="isLogged()" class="nav navbar-nav flex-row justify-content-between ml-auto">
+      <li class="dropdown pr-3">
+          <button type="button" data-toggle="dropdown" class="btn btn-secondary dropdown-toggle">Account</button>
+          <ul class="dropdown-menu dropdown-menu-right mt-2">
+              <li class="px-3 py-2 account">
+                  username: <b>{{ getUsername() }}</b>
+                  <hr>
+              </li>
+              <li class="px-3 py-2 text-center account">
+                <button type="button" class="btn btn-outline-secondary" (click)="logout()">Log out</button>
+            </li>
+          </ul>
+      </li>
+    </ul>
     </div>
   </nav>

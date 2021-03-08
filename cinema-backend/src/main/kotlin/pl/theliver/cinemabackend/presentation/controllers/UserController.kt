@@ -1,4 +1,4 @@
-package pl.theliver.cinemabackend.presentation
+package pl.theliver.cinemabackend.presentation.controllers
 
 import org.springframework.http.HttpStatus
 
@@ -17,36 +17,35 @@ class UserController(
     private val userService: UserService
 ) {
 
-    @GetMapping("/saveuser")
-    fun save(){
-//        userService.addUser(UserDto(username = "Przemek", leadingQuestion = "Ulubiony pies", leadingAnswer = "Baca").toDomain())
-    }
-
     @PostMapping(path = ["/register"])
     fun registerNewUser(@RequestBody userDto: UserDto): ResponseEntity<Boolean?>? {
+        val isCrated = userService.createUserIfNotExist(userDto.createNewUser())
 
-//        val user = userService.getUserByUsername(userDto.username)
-//
-//        if (user == null){
-//            userService.addUser(userDto.toDomain())
-//            return ResponseEntity(true, HttpStatus.OK)
-//        } else {
+        if (isCrated) {
+            return ResponseEntity(true, HttpStatus.OK)
+        }
+        else {
             throw ResponseStatusException(
                     HttpStatus.CONFLICT, "User already exists with this username"
             )
-//        }
+        }
     }
 
     @PostMapping(path = ["/login"])
     fun login(@RequestBody userDto: UserDto): ResponseEntity<Boolean?>? {
+        val user = userService.getUserByUsername(userDto.username)
 
-//        val user = userService.getUserByUsername(userDto.username)
-//
-//        if (user != null && user == userDto.toDomain()) {
-//            return ResponseEntity(true, HttpStatus.OK)
-//        }
-        throw ResponseStatusException(
-                HttpStatus.CONFLICT, "Login or answer is incorrect! Mayby you choose other question?"
-        )
+        return when {
+            user == null -> {
+                ResponseEntity(HttpStatus.NO_CONTENT)
+            }
+            UserDto.fromDomain(user) == userDto -> {
+                ResponseEntity(true, HttpStatus.OK)
+            }
+            else -> throw ResponseStatusException(
+                    HttpStatus.CONFLICT, "Login or answer is incorrect! Maybe you choose other question?"
+            )
+        }
+
     }
 }

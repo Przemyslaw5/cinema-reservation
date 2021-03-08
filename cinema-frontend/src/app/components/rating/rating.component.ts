@@ -28,7 +28,7 @@ export class RatingComponent implements OnInit {
   }
 
   //This method change the namber of stars after click
-  onRateChange(rate: number){
+  public onRateChange(rate: number){
     const modalRef = this.modalService.open(LoginComponent);
     modalRef.componentInstance.rate = rate;
   }

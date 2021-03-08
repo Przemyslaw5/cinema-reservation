@@ -1,14 +1,20 @@
 package pl.theliver.cinemabackend.application.services
 
 import org.springframework.stereotype.Service
+import pl.theliver.cinemabackend.application.repositories.MovieRepository
 import pl.theliver.cinemabackend.application.repositories.ReservationRepository
+import pl.theliver.cinemabackend.application.repositories.ScreeningRoomRepository
 import pl.theliver.cinemabackend.domain.Reservation
+import pl.theliver.cinemabackend.domain.Seance
+import pl.theliver.cinemabackend.domain.User
 import javax.transaction.Transactional
 
 @Service
 @Transactional
 class ReservationService(
-        private val reservationRepository: ReservationRepository
+        private val reservationRepository: ReservationRepository,
+        private val movieRepository: MovieRepository,
+        private val screeningRoomRepository: ScreeningRoomRepository
 ) {
 
     fun addReservation(reservation: Reservation) = reservationRepository.saveReservation(reservation)
@@ -16,4 +22,12 @@ class ReservationService(
     fun getAllReservations() = reservationRepository.getAllReservations()
 
     fun getReservationById(id: String) = reservationRepository.getReservationById(id)
+
+    fun getAllReservationsByUserId(id: String): Triple<List<Reservation>, Map<String, String>, Map<String, String>> {
+        return Triple(
+                reservationRepository.getReservationByUserId(id),
+                movieRepository.getAllMovies().map { it.id to it.title }.toMap(),
+                screeningRoomRepository.getAllScreeningRooms().map { it.id to it.name }.toMap()
+        )
+    }
 }

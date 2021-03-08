@@ -3,17 +3,6 @@
         <span class="half notification-counter" [style.width.%]="fill">&#9733;</span>&#9733;
     </span>
 </ng-template>
-      
-<!-- <ngb-rating 
-    [rate]="currentRate" 
-    [starTemplate]="t" 
-    [readonly]="readonly" 
-    max="5"
-    (hover)="hovered=$event" 
-    (leave)="hovered=''"
-    (rateChange)="onRateChange($event)"
-    >
-</ngb-rating> -->
 
 <ngb-rating 
     [rate]="movieRate" 
@@ -24,10 +13,3 @@
     (rateChange)="onRateChange($event)"
     >
 </ngb-rating>
-
-<!-- <pre>
-Your rate:    <b>{{userNumberRate}}</b>
-Average rate: <b>{{currentRate}}</b>
-</pre>
-
-<hr> -->

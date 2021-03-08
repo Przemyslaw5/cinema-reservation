@@ -36,9 +36,10 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  register(){
+  public register(){
     
     this.user = {
+      id: "papito",
       username: this.modelForm.value.username,
       leadingQuestion: this.modelForm.value.question,
       leadingAnswer: this.modelForm.value.answer
@@ -48,6 +49,7 @@ export class RegisterComponent implements OnInit {
       console.log("Add new user successfully")
       this.badRegister = false;
       this.activeModal.dismiss('Cross click');
+      this.userService.setUsername(this.user.username)
     }
     , error => {
       this.modelForm.reset();
@@ -57,11 +59,9 @@ export class RegisterComponent implements OnInit {
 
   }
 
-  changeToLogin(){
+  public changeToLogin(){
     this.activeModal.dismiss('Cross click');
     const modalRef = this.modalService.open(LoginComponent);
   }
-
-
 
 }
