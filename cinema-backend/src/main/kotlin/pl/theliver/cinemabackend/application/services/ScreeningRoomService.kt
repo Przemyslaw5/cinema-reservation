@@ -16,4 +16,6 @@ class ScreeningRoomService(
     fun getAllScreeningRooms() = screeningRoomRepository.getAllScreeningRooms()
 
     fun getScreeningRoomById(id: String) = screeningRoomRepository.getScreeningRoomById(id)
+
+    fun getScreeningRoomByName(name: String) = screeningRoomRepository.getScreeningRoomByName(name)
 }

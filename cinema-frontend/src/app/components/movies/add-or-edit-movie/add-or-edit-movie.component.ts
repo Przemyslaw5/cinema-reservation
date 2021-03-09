@@ -1,7 +1,7 @@
 import { Options } from '@angular-slider/ngx-slider';
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NewMovie } from 'src/app/model/newMovie';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CinemaService } from 'src/app/services/cinema.service';
 
 @Component({
@@ -31,7 +31,8 @@ export class AddOrEditMovieComponent implements OnInit {
   };
 
   constructor(
-    private cinemaService: CinemaService
+    private cinemaService: CinemaService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -47,15 +48,9 @@ export class AddOrEditMovieComponent implements OnInit {
   addNewMovie() {
     this.cinemaService.addNewMovie(this.modelForm.value!).subscribe(value => {
       value ? this.modelForm.controls['title'].setErrors(null) : this.modelForm.controls['title'].setErrors({'unique': !value})
-    }
-    , error => {
-      console.log(error)
-    });
-  }
-
-  addAndNaviagteToSeances() {
-    this.cinemaService.addNewMovie(this.modelForm.value!).subscribe(value => {
-      value ? this.modelForm.controls['title'].setErrors(null) : this.modelForm.controls['title'].setErrors({'unique': !value})
+      if (value) {
+        this.router.navigate(["/movies"])
+      }
     }
     , error => {
       console.log(error)

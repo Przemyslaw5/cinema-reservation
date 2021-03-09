@@ -1,38 +1,86 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Movie } from 'src/app/model/movie';
+import { NewSeance } from 'src/app/model/newSeance';
+import { SeanceValidation } from 'src/app/model/seanceValidation';
+import { CinemaService } from 'src/app/services/cinema.service';
 
 @Component({
   selector: 'app-add-or-edit-seances',
   templateUrl: './add-or-edit-seances.component.html',
   styleUrls: ['./add-or-edit-seances.component.scss']
 })
+
 export class AddOrEditSeancesComponent implements OnInit {
 
+  movie?: Movie
+  newSeance?: NewSeance
+  validations: SeanceValidation[] = []
+
   modelForm = new FormGroup({
-    title: new FormControl('asd', [Validators.required, Validators.minLength(5)]),
     seances: new FormArray([
-      // new FormControl('first', [Validators.required]), new FormControl('second', [Validators.required]),
-      new FormGroup({
-        time: new FormControl(new Date()),
-        screeningRoom: new FormControl('', [Validators.required])
-      })
     ]),
-    // question: new FormControl('', [Validators.required]),
-    // answer: new FormControl('', [Validators.required])
   })
 
   get seances(): FormArray {
     return this.modelForm.get('seances') as FormArray;
   }
 
-  // time: Date = new Date();
-  // screeningRoom: string = ""
-  // date: Date = new Date()
+  allScreeningRoomOptions: string[] = []
 
-  allOptions = ["ES", "SAFA", "DASD"]
+  constructor(
+    private cinemaService: CinemaService,
+    private route: ActivatedRoute
+  ) { }
 
-  show() {
-    // console.log(this.time)
+  ngOnInit(): void {
+    this.getMovieFromUrl()
+    this.getAllScreeningRooms()
+    this.addAnotherSeance()
+  }
+
+  checkAddingNewSeance() {
+
+    const index = (<FormArray>this.modelForm.get('seances')).length - 1
+
+    const seanceForm = (<FormArray>this.modelForm.get('seances')).at((index))
+    console.log("<AS")
+    const screeningRoom = seanceForm.get('screeningRoom')!.value
+    console.log("SA")
+    const startDate = seanceForm.get('time')!.value
+    console.log("EASE")
+
+    if (screeningRoom == "") {
+      console.log("ESA")
+      this.validations[index].screeningRoomInvalid = true
+    }
+    else { 
+      this.prepareSeance(screeningRoom, startDate) 
+      this.cinemaService.addNewSeance(this.newSeance!).subscribe(value => {
+        console.log(value)
+        if (!value) {
+          this.validations[index].screeningRoomInvalid = false
+          this.validations[index].hourInvalid = true
+        }
+        else {
+          this.validations[index].hourInvalid = false
+          this.addAnotherSeance()
+        }
+      }
+      , error => {
+        console.log(error)
+      });
+    }
+  } 
+
+  prepareSeance(screeningRoom: string, startDate: Date) {
+    this.newSeance = {
+      movieId: this.movie!.id,
+      startDate: startDate.toISOString(),
+      screeningRoomName: screeningRoom
+
+    }
   }
 
   addAnotherSeance() {
@@ -40,22 +88,32 @@ export class AddOrEditSeancesComponent implements OnInit {
       time: new FormControl(new Date()),
       screeningRoom: new FormControl('', [Validators.required])
     }))
+
+    this.validations.push({
+      screeningRoomInvalid: false,
+      screeningRoomError: "Screening room is required",
+      hourInvalid: false,
+      hourError: "There is a conflict with another seance. Please choose a different time"
+    })
   }
 
-  constructor() { }
+  getMovieFromUrl() {
+    const id = this.route.snapshot.paramMap.get("id");
+      this.cinemaService.getMovieById(id!).subscribe(
+        movie => {
+          this.movie = movie
+        },
+        ({error}) =>
+          console.log(error)
+      );
+  }
 
-  ngOnInit(): void {
-    // (<FormArray>this.modelForm.get('seances')).push(new FormControl('EASE'));
-    // (<FormArray>this.modelForm.get('seances')).push(new FormControl('dasda'))
-    // this.modelForm.value.seances.push(new FormControl('EASE'), [Validators.required])
-    // this.modelForm.value.seances.push(new FormControl('dasd'))
-    // this.modelForm.value.seances.push(new FormControl('hhsf'))
-    // this.modelForm.value.seances.push(new FormControl('PESAS'), [Validators.required])
-    // this.modelForm.value.title.value = "EASE"
-    // console.log(this.modelForm.value.seances)
-    // console.log((<FormArray>this.modelForm.get('seances')).at(2).value)
-    // console.log(this.modelForm.get(['seances', 0])?.value)
-    // console.log(this.seances.value)
+  getAllScreeningRooms() {
+    console.log("ESA")
+    this.cinemaService.getAllScreeningRooms().subscribe(rooms => {
+      this.allScreeningRoomOptions = rooms.map(room => room.name)
+      console.log(this.allScreeningRoomOptions)
+    });
   }
 
 }

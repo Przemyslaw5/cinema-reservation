@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Movie } from '../model/movie';
 import { NewMovie } from '../model/newMovie';
+import { NewSeance } from '../model/newSeance';
 import { Place } from '../model/place';
 import { ScreeningRoom } from '../model/screeningRoom';
 import { Seance } from '../model/seance';
@@ -37,6 +38,10 @@ export class CinemaService {
     return this.httpClient.get<ScreeningRoom>(this.DOMAIN + `/screening-rooms/${id}`)
   }
 
+  public getAllScreeningRooms(): Observable<ScreeningRoom[]> {
+    return this.httpClient.get<ScreeningRoom[]>(this.DOMAIN + `/screening-rooms`)
+  }
+
   public getPlacesFromSeanceId(seanceId: string): Observable<Place[]> {
     return this.httpClient.get<Place[]>(this.DOMAIN + `/screening-rooms/${seanceId}/places`)
   }
@@ -51,6 +56,10 @@ export class CinemaService {
 
   public addNewMovie(newMovie: NewMovie): Observable<boolean> {
     return this.httpClient.post<boolean>(this.DOMAIN + `/movie/add`, newMovie)
+  }
+
+  public addNewSeance(newSeance: NewSeance): Observable<boolean> {
+    return this.httpClient.post<boolean>(this.DOMAIN + `/seance/add`, newSeance)
   }
 
 }

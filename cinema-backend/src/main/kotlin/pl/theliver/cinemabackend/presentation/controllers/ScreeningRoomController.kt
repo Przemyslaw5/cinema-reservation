@@ -15,6 +15,10 @@ class ScreeningRoomController(
         private val placeService: PlaceService
 ) {
 
+    @GetMapping("/screening-rooms")
+    fun getAllScreeningRooms() =
+        screeningRoomService.getAllScreeningRooms().map { ScreeningRoomDto.fromDomain(it) }
+
     @GetMapping("/screening-rooms/{id}")
     fun getScreeningRoom(@PathVariable("id") id: String) =
             ScreeningRoomDto.fromDomain(screeningRoomService.getScreeningRoomById(id))

@@ -6,4 +6,5 @@ interface ScreeningRoomRepository {
     fun saveScreeningRoom(screeningRoom: ScreeningRoom)
     fun getAllScreeningRooms(): List<ScreeningRoom>
     fun getScreeningRoomById(id: String): ScreeningRoom
+    fun getScreeningRoomByName(name: String): ScreeningRoom
 }

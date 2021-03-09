@@ -32,4 +32,7 @@ class SeanceRepositoryJpa(
 
     override fun getAllSeancesByMovieId(id: String): List<Seance> =
             seanceCrudRepositoryJpa.getAllSeancesByMovieId(id).map { it.toDomain() }
+
+    override fun getAllSeancesByScreeningRoomId(id: String) =
+        seanceCrudRepositoryJpa.getAllSeancesByScreeningRoomId(id).map { it.toDomain() }
 }
