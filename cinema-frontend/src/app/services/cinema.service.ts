@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Movie } from '../model/movie';
+import { NewMovie } from '../model/newMovie';
 import { Place } from '../model/place';
 import { ScreeningRoom } from '../model/screeningRoom';
 import { Seance } from '../model/seance';
@@ -46,6 +47,10 @@ export class CinemaService {
 
   public getAllReservationsForUser(username: string): Observable<UserReservation[]> {
     return this.httpClient.post<UserReservation[]>(this.DOMAIN + `/reservations`, username)
+  }
+
+  public addNewMovie(newMovie: NewMovie): Observable<boolean> {
+    return this.httpClient.post<boolean>(this.DOMAIN + `/movie/add`, newMovie)
   }
 
 }

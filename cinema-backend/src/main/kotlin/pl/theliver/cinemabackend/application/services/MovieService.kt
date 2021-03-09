@@ -16,4 +16,14 @@ class MovieService(
     fun getAllMovies() = movieRepositoryJpa.getAllMovies()
 
     fun getMovieById(id: String) = movieRepositoryJpa.getMovieById(id)
+
+    fun createNewMovieIfTitleNotExists(newMovie: Movie): Boolean {
+        val numberOfFilms = movieRepositoryJpa.getMovieByTitle(newMovie.title).size
+
+        if (numberOfFilms == 0) {
+            movieRepositoryJpa.saveMovie(newMovie)
+            return true
+        }
+        return false
+    }
 }

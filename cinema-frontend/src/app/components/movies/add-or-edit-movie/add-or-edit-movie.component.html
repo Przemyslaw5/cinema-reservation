@@ -1,0 +1,118 @@
+<form class="m-3" [formGroup]="modelForm" novalidate>
+    <div class="container" style="background-color: white;">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Title:</label>
+                    <input class="form-control" formControlName="title" type="text" placeholder="Enter the title of movie" [ngClass]="{
+                        'is-valid': modelForm.get('title')?.valid && modelForm.get('title')?.dirty,
+                        'is-invalid': modelForm.get('title')?.invalid && modelForm.get('title')?.dirty}">
+                    <div class="invalid-feedback" *ngIf="modelForm.get('title')?.invalid && modelForm.get('title')?.dirty">
+                        <p *ngIf="modelForm.get('title')?.errors?.required">Title is required!</p>
+                        <p *ngIf="modelForm.get('title')?.errors?.unique">Title must be unique!</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-control" formControlName="description" textarea rows="4" placeholder="This movie is very ..." [ngClass]="{
+                        'is-valid': modelForm.get('description')?.valid && modelForm.get('description')?.dirty,
+                        'is-invalid': modelForm.get('description')?.invalid && modelForm.get('description')?.dirty}"></textarea>
+                    <div class="invalid-feedback" *ngIf="modelForm.get('description')?.invalid && modelForm.get('description')?.dirty">
+                        <p *ngIf="modelForm.get('description')?.errors?.required">Title is required!</p>
+                        <p *ngIf="modelForm.get('description')?.errors?.minlength">Title has to at least 20 characters!</p>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label>Genre of movie:</label>
+                    <select formControlName="genre" class="form-control" [ngClass]="{
+                        'is-valid': modelForm.get('genre')?.valid && modelForm.get('genre')?.dirty,
+                        'is-invalid': modelForm.get('genre')?.invalid && modelForm.get('genre')?.dirty}">
+                        <option value="" disabled hidden></option>
+                        <option *ngFor="let genre of allGenresOptions">{{genre}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Movie URL: </label>
+                    <input class="form-control" formControlName="image" placeholder="Link url to image" [ngClass]="{
+                        'is-valid': modelForm.get('image')?.valid && modelForm.get('image')?.dirty,
+                        'is-invalid': modelForm.get('image')?.invalid && modelForm.get('image')?.dirty}">
+                    <div class="invalid-feedback" *ngIf="modelForm.get('image')?.errors && modelForm.get('image')?.dirty">
+                            <p *ngIf="modelForm.get('image')?.errors?.required">Link url to image is required!</p>
+                            <p *ngIf="modelForm.get('image')?.errors?.pattern">Wrong url!</p>
+                    </div>
+                </div>
+
+                <div class="form-group custom-slider">
+                    <label>Duration time (min):</label>
+                    <ngx-slider formControlName="durationTime" [options]="durationTimeOptions"></ngx-slider>
+                </div>
+
+
+                <div class="form-group">
+                    <label>Release Date</label>
+                    <input type="text"
+                         placeholder="Datepicker"
+                         class="form-control"
+                         bsDatepicker
+                         formControlName="releaseDate">
+                </div>
+
+
+                <div class="form-group">
+                    <label>Director:</label>
+                    <input class="form-control" formControlName="director" type="text" placeholder="Enter the director of movie" [ngClass]="{
+                        'is-valid': modelForm.get('director')?.valid && modelForm.get('director')?.dirty,
+                        'is-invalid': modelForm.get('director')?.invalid && modelForm.get('director')?.dirty}">
+                    <div class="invalid-feedback" *ngIf="modelForm.get('director')?.invalid && modelForm.get('director')?.dirty">
+                        <p *ngIf="modelForm.get('director')?.errors?.required">Director is required!</p>
+                    </div>
+                </div>
+    
+                <!-- <div class="form-group">
+                    <label>Semester: {{semester.value}}</label>
+                    <input class="form-control custom-range" formControlName="semester" type="range" min="1" max="10" step="1" [ngClass]="{
+                        'is-valid': semester.valid && semester.dirty,
+                        'is-invalid': semester.invalid && semester.dirty}">
+                </div> -->
+            </div>
+            
+            <!-- <div class="col-md-6">
+                <div class="form-group">
+                    <label>Max number of students:</label>
+                    <input class="form-control" formControlName="maxNumberOfStudents" type="number" placeholder="Max Students" [ngClass]="{
+                        'is-valid': maxNumberOfStudents.valid && maxNumberOfStudents.dirty,
+                        'is-invalid': maxNumberOfStudents.invalid && maxNumberOfStudents.dirty}">
+                    <div class="invalid-feedback" *ngIf="maxNumberOfStudents.invalid && maxNumberOfStudents.dirty">
+                        <p *ngIf="maxNumberOfStudents.errors.required">The number is required!</p>
+                        <p *ngIf="maxNumberOfStudents.errors.min">The number should be positive!</p>
+                    </div>
+                </div>
+            
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-control" formControlName="description" textarea rows="4" placeholder="This course is very ..." [ngClass]="{
+                        'is-valid': description.valid && description.dirty,
+                        'is-invalid': description.invalid && description.dirty}"></textarea>
+                    <div class="invalid-feedback" *ngIf="description.invalid && description.dirty">
+                        <p>Course description may be short but required!</p>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+
+    <div class="text-center m-5">
+        <a class="btn btn-secondary btn-lg disabled" role="button" *ngIf="modelForm.invalid" aria-disabled="true">Add a course</a>
+        <button type="button" class="btn btn-primary btn-lg" *ngIf="modelForm.valid" (click)="addNewMovie()">Add new movie</button>
+    </div>
+
+    <div class="text-center m-5">
+        <a class="btn btn-secondary btn-lg disabled" role="button" *ngIf="modelForm.invalid" aria-disabled="true">Add ang go to create seances</a>
+        <button type="button" class="btn btn-primary btn-lg" *ngIf="modelForm.valid" (click)="addAndNaviagteToSeances()">Add ang go to create seances</button>
+    </div>
+
+</form>
