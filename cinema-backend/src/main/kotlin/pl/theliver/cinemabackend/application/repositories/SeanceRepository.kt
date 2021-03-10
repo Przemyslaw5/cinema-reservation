@@ -8,4 +8,5 @@ interface SeanceRepository {
     fun getSeanceById(id: String): Seance
     fun getAllSeancesByMovieId(id: String): List<Seance>
     fun getAllSeancesByScreeningRoomId(id: String): List<Seance>
+    fun deleteById(id: String)
 }

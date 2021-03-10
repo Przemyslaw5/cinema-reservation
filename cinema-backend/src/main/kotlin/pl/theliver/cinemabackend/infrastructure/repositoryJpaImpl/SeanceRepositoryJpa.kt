@@ -35,4 +35,6 @@ class SeanceRepositoryJpa(
 
     override fun getAllSeancesByScreeningRoomId(id: String) =
         seanceCrudRepositoryJpa.getAllSeancesByScreeningRoomId(id).map { it.toDomain() }
+
+    override fun deleteById(id: String) = seanceCrudRepositoryJpa.deleteById(id)
 }

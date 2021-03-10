@@ -1,13 +1,9 @@
 package pl.theliver.cinemabackend.application.services
 
 import org.springframework.stereotype.Service
-import pl.theliver.cinemabackend.application.repositories.MovieRepository
-import pl.theliver.cinemabackend.application.repositories.PlaceRepository
-import pl.theliver.cinemabackend.application.repositories.ScreeningRoomRepository
-import pl.theliver.cinemabackend.application.repositories.SeanceRepository
+import pl.theliver.cinemabackend.application.repositories.*
 import pl.theliver.cinemabackend.domain.Place
 import pl.theliver.cinemabackend.domain.Seance
-import pl.theliver.cinemabackend.infrastructure.repositoryJpaImpl.ScreeningRoomRepositoryJpa
 import javax.transaction.Transactional
 
 @Service
@@ -16,7 +12,8 @@ class SeanceService(
     private val seanceRepository: SeanceRepository,
     private val screeningRoomRepository: ScreeningRoomRepository,
     private val movieRepository: MovieRepository,
-    private val placeRepository: PlaceRepository
+    private val placeRepository: PlaceRepository,
+    private val reservationRepository: ReservationRepository
 ) {
 
     fun addSeance(seance: Seance) = seanceRepository.saveSeance(seance)
@@ -29,6 +26,12 @@ class SeanceService(
 
     fun getSeancesByScreeningRoomId(id: String) = seanceRepository.getAllSeancesByScreeningRoomId(id)
 
+    fun deleteSeanceById(id: String) {
+        placeRepository.getAllPlacesBySeanceId(id).map { placeRepository.deleteById(it.id) }
+        reservationRepository.getAllReservationsBySeanceId(id).map { reservationRepository.deleteById(it.id) }
+        seanceRepository.deleteById(id)
+    }
+
     fun getSeancesByMovieIdAndDictForRoom(id: String): Pair<List<Seance>, Map<String, String>> {
         return Pair(
             seanceRepository.getAllSeancesByMovieId(id),
@@ -36,7 +39,7 @@ class SeanceService(
         )
     }
 
-    fun createNewSeanceIfNotHoursConflict(seance: Seance): Boolean {
+    fun createNewSeanceIfNotHoursConflict(seance: Seance): Seance? {
         val seances = seanceRepository.getAllSeancesByScreeningRoomId(seance.screeningRoomId).filter {
             it.startDate.year == seance.startDate.year &&
                     it.startDate.monthValue == seance.startDate.monthValue &&
@@ -55,7 +58,7 @@ class SeanceService(
         }.toList()
 
         if (seancesConflicted.isNotEmpty()) {
-            return false
+            return null
         }
         seanceRepository.saveSeance(seance)
 
@@ -70,6 +73,6 @@ class SeanceService(
             seance.places.add(place)
         }
         seanceRepository.saveSeance(seance)
-        return true
+        return seance
     }
 }

@@ -11,8 +11,8 @@ import pl.theliver.cinemabackend.presentation.model.SeanceDto
 @RestController
 @CrossOrigin
 class SeanceController(
-        private val seanceService: SeanceService,
-        private val screeningRoomService: ScreeningRoomService
+    private val seanceService: SeanceService,
+    private val screeningRoomService: ScreeningRoomService
 ) {
 
     @GetMapping("/movies/{id}/seances")
@@ -22,12 +22,21 @@ class SeanceController(
     }
 
     @PostMapping("/seance/add")
-    fun getReservationsFromUser(@RequestBody newSeanceDto: NewSeanceDto): ResponseEntity<Boolean> {
+    fun addNewSeance(@RequestBody newSeanceDto: NewSeanceDto): ResponseEntity<SeanceDto> {
 
         val screeningRoomId = screeningRoomService.getScreeningRoomByName(newSeanceDto.screeningRoomName).id
 
-        return ResponseEntity(
-            seanceService.createNewSeanceIfNotHoursConflict(newSeanceDto.toDomain(screeningRoomId)), HttpStatus.OK
-        )
+        return when (val seance =
+            seanceService.createNewSeanceIfNotHoursConflict(newSeanceDto.toDomain(screeningRoomId))) {
+            null -> {
+                ResponseEntity(HttpStatus.NO_CONTENT)
+            }
+            else -> ResponseEntity(
+                SeanceDto.fromDomain(seance, newSeanceDto.screeningRoomName), HttpStatus.OK
+            )
+        }
     }
+
+    @DeleteMapping("remove/seance/{id}")
+    fun deleteSeance(@PathVariable("id") id: String) = seanceService.deleteSeanceById(id)
 }

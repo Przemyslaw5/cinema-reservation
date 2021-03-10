@@ -5,13 +5,13 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-md-6" style="background-color: white;">
+                <div class="col-md-12" style="background-color: white;">
                     <div class="form-group">
                         <div formArrayName="seances">
                             <div *ngFor="let seance of seances.controls; index as i">
                                 <div class="row" [formGroupName]="i">
                                 
-                                    <div class="col-md-4 form-group">
+                                    <div class="col-md-3 form-group">
                                         <label>Screening Room</label>
                                         <select class="form-control" formControlName="screeningRoom" [ngClass]="{
                                             'is-valid': seance.get('screeningRoom')?.valid && seance.get('screeningRoom')?.dirty,
@@ -27,7 +27,7 @@
                                         </div>
                                     </div>
                                 
-                                    <div class="col-md-4 form-group">
+                                    <div class="col-md-3 form-group">
                                         <label>Date</label>
                                         <input type="text"
                                              placeholder="Datepicker"
@@ -36,8 +36,12 @@
                                              formControlName="time">
                                     </div>
 
-                                    <div class="col-md-4 form-group mt-1">
+                                    <div class="col-md-3 form-group mt-1">
                                         <timepicker formControlName="time" [showMeridian]="false" [minuteStep]="1"></timepicker>
+                                    </div>
+
+                                    <div class="col-md-3 form-group mt-1" *ngIf="i != seances.length - 1">
+                                        <button type="button" class="btn btn-danger" (click)="deleteSeance(i)">Delete</button>
                                     </div>
                                 </div>
 

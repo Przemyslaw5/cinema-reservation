@@ -58,8 +58,12 @@ export class CinemaService {
     return this.httpClient.post<boolean>(this.DOMAIN + `/movie/add`, newMovie)
   }
 
-  public addNewSeance(newSeance: NewSeance): Observable<boolean> {
-    return this.httpClient.post<boolean>(this.DOMAIN + `/seance/add`, newSeance)
+  public addNewSeance(newSeance: NewSeance): Observable<Seance> {
+    return this.httpClient.post<Seance>(this.DOMAIN + `/seance/add`, newSeance)
+  }
+
+  public deleteSeance(id: string) {
+    return this.httpClient.delete(this.DOMAIN + `/remove/seance/${id}`)
   }
 
 }

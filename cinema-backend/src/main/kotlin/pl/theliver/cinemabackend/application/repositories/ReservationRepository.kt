@@ -8,4 +8,7 @@ interface ReservationRepository {
     fun getAllReservations(): List<Reservation>
     fun getReservationById(id: String): Reservation
     fun getReservationByUserId(id: String): List<Reservation>
+    fun getAllReservationsBySeanceId(id: String): List<Reservation>
+    fun deleteById(id: String)
+
 }
