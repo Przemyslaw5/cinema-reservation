@@ -4,7 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Movie } from 'src/app/model/movie';
 import { NewSeance } from 'src/app/model/newSeance';
 import { Seance } from 'src/app/model/seance';
-import { SeanceValidation } from 'src/app/model/seanceValidation';
 import { CinemaService } from 'src/app/services/cinema.service';
 
 @Component({
@@ -17,8 +16,10 @@ export class AddOrEditSeancesComponent implements OnInit {
 
   movie?: Movie
   newSeance?: NewSeance
-  validations: SeanceValidation[] = []
   seancesFromMovie: Seance[] = []
+
+  timeConflict          = false;
+  screeningRoomConflict = false;
 
   modelForm = new FormGroup({
     seances: new FormArray([
@@ -42,45 +43,52 @@ export class AddOrEditSeancesComponent implements OnInit {
   }
 
   loadSeancesFromMovie() {
-    console.log(this.movie!.id)
     this.cinemaService.getSeancesFromMovieId(this.movie!.id).subscribe(seances => {
       this.seancesFromMovie = seances;
       this.seancesFromMovie.map(seance => {
         (<FormArray>this.modelForm.get('seances')).push(new FormGroup({
+          date: new FormControl(new Date(seance.startDate)),
           time: new FormControl(new Date(seance.startDate)),
           screeningRoom: new FormControl(seance.screeningRoomName, [Validators.required])
         }))
-        this.validations.push({
-          screeningRoomInvalid: false,
-          screeningRoomError: "Screening room is required",
-          hourInvalid: false,
-          hourError: "There is a conflict with another seance. Please choose a different time"
-        })
+
+        this.timeConflict = false
+        this.screeningRoomConflict = false;
+
       })
       this.addAnotherSeance()
     });
   }
 
   checkAddingNewSeance() {
-
     const index = (<FormArray>this.modelForm.get('seances')).length - 1
 
     const seanceForm = (<FormArray>this.modelForm.get('seances')).at((index))
     const screeningRoom = seanceForm.get('screeningRoom')!.value
-    const startDate = seanceForm.get('time')!.value
+    const startDate = seanceForm.get('date')!.value
+    const startTime = seanceForm.get('time')!.value
 
-    if (screeningRoom == "") {
-      this.validations[index].screeningRoomInvalid = true
+    if (screeningRoom == "" || startDate == null || startTime == null) {
+      this.screeningRoomConflict = true
     }
     else { 
-      this.prepareNewSeance(screeningRoom, startDate) 
+      this.prepareNewSeance(screeningRoom, startDate, startTime) 
       this.cinemaService.addNewSeance(this.newSeance!).subscribe(value => {
         if (value == null) {
-          this.validations[index].screeningRoomInvalid = false
-          this.validations[index].hourInvalid = true
+          this.screeningRoomConflict = false
+          this.timeConflict = true
         }
         else {
-          this.validations[index].hourInvalid = false
+          this.timeConflict = false;
+
+          (<FormArray>this.modelForm.get('seances')).removeAt(index);
+
+          (<FormArray>this.modelForm.get('seances')).push(new FormGroup({
+            date: new FormControl(new Date(value.startDate)),
+            time: new FormControl(new Date(value.startDate)),
+            screeningRoom: new FormControl(value.screeningRoomName, [Validators.required])
+          }))
+
           this.seancesFromMovie.push(value)
           this.addAnotherSeance()
         }
@@ -91,10 +99,13 @@ export class AddOrEditSeancesComponent implements OnInit {
     }
   } 
 
-  prepareNewSeance(screeningRoom: string, startDate: Date) {
+  prepareNewSeance(screeningRoom: string, startDate: Date, startTime: string) {
+    const date = new Date(startDate)
+    date.setHours(parseInt(startTime.split(":")[0]))
+    date.setMinutes(parseInt(startTime.split(":")[1]))
     this.newSeance = {
       movieId: this.movie!.id,
-      startDate: startDate.toISOString(),
+      startDate: date.toISOString(),
       screeningRoomName: screeningRoom
 
     }
@@ -102,16 +113,13 @@ export class AddOrEditSeancesComponent implements OnInit {
 
   addAnotherSeance() {
     (<FormArray>this.modelForm.get('seances')).push(new FormGroup({
-      time: new FormControl(new Date()),
+      date: new FormControl(),
+      time: new FormControl(),
       screeningRoom: new FormControl('', [Validators.required])
     }))
 
-    this.validations.push({
-      screeningRoomInvalid: false,
-      screeningRoomError: "Screening room is required",
-      hourInvalid: false,
-      hourError: "There is a conflict with another seance. Please choose a different time"
-    })
+    this.timeConflict = false
+    this.screeningRoomConflict = false;
   }
 
   getMovieFromUrl() {
@@ -127,18 +135,25 @@ export class AddOrEditSeancesComponent implements OnInit {
   }
 
   getAllScreeningRooms() {
-    console.log("ESA")
     this.cinemaService.getAllScreeningRooms().subscribe(rooms => {
       this.allScreeningRoomOptions = rooms.map(room => room.name)
-      console.log(this.allScreeningRoomOptions)
     });
   }
 
   public deleteSeance(index: number) {
-    this.validations.splice(index, 1);
     (<FormArray>this.modelForm.get('seances')).removeAt(index)
     this.cinemaService.deleteSeance(this.seancesFromMovie[index].id)
     this.seancesFromMovie.splice(index, 1)
+  }
+
+  public getDate(index: number) {
+    const date = new Date((<FormArray>this.modelForm.get('seances')).at((index)).get('time')!.value)
+    return date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear()
+  }
+
+  public getTime(index: number) {
+    const date = new Date((<FormArray>this.modelForm.get('seances')).at((index)).get('time')!.value)
+    return (date.getHours() + ":" + (date.getMinutes()<10?'0':'') + date.getMinutes())
   }
 
 }
