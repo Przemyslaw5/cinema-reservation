@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Movie } from '../model/movie';
 import { NewMovie } from '../model/newMovie';
+import { NewReservation } from '../model/newReservation';
 import { NewSeance } from '../model/newSeance';
 import { Place } from '../model/place';
 import { ScreeningRoom } from '../model/screeningRoom';
@@ -64,6 +65,10 @@ export class CinemaService {
 
   public deleteSeance(id: string) {
     return this.httpClient.delete(this.DOMAIN + `/remove/seance/${id}`)
+  }
+
+  public addNewReservation(newReservation: NewReservation): Observable<boolean> {
+    return this.httpClient.post<boolean>(this.DOMAIN + `/addReservation`, newReservation)
   }
 
 }

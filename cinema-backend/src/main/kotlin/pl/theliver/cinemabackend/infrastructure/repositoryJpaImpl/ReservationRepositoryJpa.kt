@@ -12,7 +12,8 @@ class ReservationRepositoryJpa(
     private val rateCrudRepositoryJpa: RateCrudRepositoryJpa,
     private val seanceCrudRepositoryJpa: SeanceCrudRepositoryJpa,
     private val movieCrudRepositoryJpa: MovieCrudRepositoryJpa,
-    private val screeningRoomCrudRepositoryJpa: ScreeningRoomCrudRepositoryJpa
+    private val screeningRoomCrudRepositoryJpa: ScreeningRoomCrudRepositoryJpa,
+    private val userCrudRepositoryJpa: UserCrudRepositoryJpa
 ) : ReservationRepository {
     override fun saveReservation(reservation: Reservation) {
         reservationCrudRepositoryJpa.save(
@@ -38,5 +39,13 @@ class ReservationRepositoryJpa(
     override fun getAllReservationsBySeanceId(id: String) =
         reservationCrudRepositoryJpa.getAllReservationsBySeanceId(id).map { it.toDomain() }
 
-    override fun deleteById(id: String) = reservationCrudRepositoryJpa.deleteById(id)
+    override fun deleteById(id: String) {
+
+        val reservation = reservationCrudRepositoryJpa.findById(id).get()
+        val user = reservation.user
+        user.reservations.minusElement(reservation)
+        userCrudRepositoryJpa.save(user)
+
+        reservationCrudRepositoryJpa.delete(reservation)
+    }
 }

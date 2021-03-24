@@ -16,4 +16,6 @@ class PlaceService(
     fun getAllPlaces() = placeRepositoryJpa.getAllPlaces()
 
     fun getPlaceById(id: String) = placeRepositoryJpa.getPlaceById(id)
+
+    fun getAllPlacesBySeanceId(seanceId: String) = placeRepositoryJpa.getAllPlacesBySeanceId(seanceId)
 }

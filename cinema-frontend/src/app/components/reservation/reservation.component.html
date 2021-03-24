@@ -1,6 +1,6 @@
-<div class="container-fluid w-75 mt-5">
+<div class="container-fluid w-75 my-5">
     <div class="row">
-        <div class="col-sm-12 color text-center card">
+        <div class="col-sm-12 color text-center card mb-5">
             <div>
                 <h1 class="p-5 m-0">{{movie.title}}</h1>
             </div>
@@ -116,6 +116,28 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+
+            
+            <div *ngIf="numberPlaces.length > 0" class="py-5">
+                <form class="m-3" [formGroup]="modelForm" novalidate>
+                    
+                    <div class="form-group">
+                        <input class="form-control adding center-block" style="width: 200px;" formControlName="secretWord" type="text" placeholder="Enter your secret word" [ngClass]="{
+                            'is-valid': modelForm.get('secretWord')?.valid && modelForm.get('secretWord')?.dirty,
+                            'is-invalid': modelForm.get('secretWord')?.invalid && modelForm.get('secretWord')?.dirty}">
+                        <div class="invalid-feedback" *ngIf="modelForm.get('secretWord')?.invalid && modelForm.get('secretWord')?.dirty">
+                            <p *ngIf="modelForm.get('secretWord')?.errors?.required">Secret word is required!</p>
+                            <p *ngIf="modelForm.get('secretWord')?.errors?.minlength">Secret word has at least 5 characters!</p>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-3 mb-5">
+                        <a class="btn btn-secondary btn-lg disabled" style="width: 200px;" role="button" *ngIf="modelForm.invalid" aria-disabled="true">Add Reservation</a>
+                        <button type="button" class="btn btn-primary btn-lg" style="width: 200px;" *ngIf="modelForm.valid" (click)="addNewReservation()">Add Reservation</button>
+                    </div>
+                    
+                </form>
             </div>
         </div>
     </div>

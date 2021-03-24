@@ -1,4 +1,3 @@
-import { PlatformLocation } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { UserReservation } from 'src/app/model/userReservation';
 import { CinemaService } from 'src/app/services/cinema.service';
@@ -26,6 +25,7 @@ export class UserReservationsComponent implements OnInit {
   getReservations() {
     this.cinemaService.getAllReservationsForUser(this.userService.getUsername()!).subscribe(reservations => {
       this.reservations = reservations;
+      console.log(reservations)
     }
     , error => {
       console.log(error)
