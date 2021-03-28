@@ -40,7 +40,13 @@ class ReservationController(
         val user = userService.getUserByUsername(newReservationDto.username)!!
 
         return ResponseEntity(
-            reservationService.addNewReservation(newReservationDto.toDomain(seance, user, placeService.getAllPlacesBySeanceId(newReservationDto.seanceId))),
+            reservationService.addNewReservation(
+                newReservationDto.toDomain(
+                    seance,
+                    user,
+                    placeService.getAllPlacesBySeanceId(newReservationDto.seanceId)
+                )
+            ),
             HttpStatus.OK
         )
     }

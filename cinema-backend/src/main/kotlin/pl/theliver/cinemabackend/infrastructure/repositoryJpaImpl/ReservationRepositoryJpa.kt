@@ -40,12 +40,10 @@ class ReservationRepositoryJpa(
         reservationCrudRepositoryJpa.getAllReservationsBySeanceId(id).map { it.toDomain() }
 
     override fun deleteById(id: String) {
-
         val reservation = reservationCrudRepositoryJpa.findById(id).get()
         val user = reservation.user
         user.reservations.minusElement(reservation)
         userCrudRepositoryJpa.save(user)
-
         reservationCrudRepositoryJpa.delete(reservation)
     }
 }

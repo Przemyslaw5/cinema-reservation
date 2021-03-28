@@ -24,12 +24,8 @@ class MovieController(
     fun getAllGenres() = MovieGenre.values()
 
     @PostMapping("/movie/add")
-    fun getReservationsFromUser(@RequestBody newMovieDto: NewMovieDto): ResponseEntity<Boolean> {
-
-        return ResponseEntity(
+    fun getReservationsFromUser(@RequestBody newMovieDto: NewMovieDto) = ResponseEntity(
             movieService.createNewMovieIfTitleNotExists(newMovieDto.toDomain()), HttpStatus.OK
         )
-    }
-
 }
 

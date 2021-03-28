@@ -39,7 +39,7 @@ class SeanceService(
         )
     }
 
-    fun createNewSeanceIfNotHoursConflict(seance: Seance): Seance? {
+    fun isSeanceConflictedWithOthers(seance: Seance): Boolean {
         val seances = seanceRepository.getAllSeancesByScreeningRoomId(seance.screeningRoomId).filter {
             it.startDate.year == seance.startDate.year &&
                     it.startDate.monthValue == seance.startDate.monthValue &&
@@ -57,22 +57,29 @@ class SeanceService(
                     (seanceEndMin >= (((it.startDate.hour * 60) + it.startDate.minute) + movieDurationTime))
         }.toList()
 
-        if (seancesConflicted.isNotEmpty()) {
-            return null
-        }
-        seanceRepository.saveSeance(seance)
+        return seancesConflicted.isNotEmpty()
+    }
 
+    fun prepareNewPlacesForSeance(seance: Seance) {
         val screeningRoom = screeningRoomRepository.getScreeningRoomById(seance.screeningRoomId)
 
-        (0 until screeningRoom.placeNumber).forEach { j ->
+        (0 until screeningRoom.placeNumber).forEach { placeNumberIndex ->
             val place = Place(
-                number = j + 1,
+                number = placeNumberIndex + 1,
                 seanceId = seance.id
             )
             placeRepository.savePlace(place)
             seance.places.add(place)
         }
         seanceRepository.saveSeance(seance)
+    }
+
+    fun createNewSeanceIfNotHoursConflict(seance: Seance): Seance? {
+        if (isSeanceConflictedWithOthers(seance)) {
+            return null
+        }
+        seanceRepository.saveSeance(seance)
+        prepareNewPlacesForSeance(seance)
         return seance
     }
 }

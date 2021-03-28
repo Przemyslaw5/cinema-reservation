@@ -39,13 +39,13 @@ export class AddOrEditMovieComponent implements OnInit {
     this.getAllGenres()
   }
 
-  getAllGenres() {
+  private getAllGenres() {
     this.cinemaService.getAllGenres().subscribe(genres => {
       this.allGenresOptions = genres.map(genre => genre.replace("_", " "));
     });
   }
 
-  addNewMovie() {
+  public addNewMovie() {
     this.cinemaService.addNewMovie(this.modelForm.value!).subscribe(value => {
       value ? this.modelForm.controls['title'].setErrors(null) : this.modelForm.controls['title'].setErrors({'unique': !value})
       if (value) {

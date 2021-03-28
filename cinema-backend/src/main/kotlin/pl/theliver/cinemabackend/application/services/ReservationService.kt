@@ -21,7 +21,6 @@ class ReservationService(
     fun getReservationById(id: String) = reservationRepository.getReservationById(id)
 
     fun getAllReservationsByUserId(id: String): Triple<List<Reservation>, Map<String, String>, Map<String, String>> {
-        println(reservationRepository.getReservationByUserId(id))
         return Triple(
             reservationRepository.getReservationByUserId(id),
             movieRepository.getAllMovies().map { it.id to it.title }.toMap(),
@@ -31,8 +30,7 @@ class ReservationService(
 
     fun addNewReservation(reservation: Reservation): Boolean {
         addReservation(reservation)
-        reservation.places.map { it.reservationId = reservation.id }
-        reservation.places.map { placeRepository.savePlace(it) }
+        reservation.places.forEach { it.reservationId = reservation.id; placeRepository.savePlace(it) }
         return true
     }
 }

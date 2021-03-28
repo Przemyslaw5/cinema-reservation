@@ -71,37 +71,7 @@
                         <p *ngIf="modelForm.get('director')?.errors?.required">Director is required!</p>
                     </div>
                 </div>
-    
-                <!-- <div class="form-group">
-                    <label>Semester: {{semester.value}}</label>
-                    <input class="form-control custom-range" formControlName="semester" type="range" min="1" max="10" step="1" [ngClass]="{
-                        'is-valid': semester.valid && semester.dirty,
-                        'is-invalid': semester.invalid && semester.dirty}">
-                </div> -->
             </div>
-            
-            <!-- <div class="col-md-6">
-                <div class="form-group">
-                    <label>Max number of students:</label>
-                    <input class="form-control" formControlName="maxNumberOfStudents" type="number" placeholder="Max Students" [ngClass]="{
-                        'is-valid': maxNumberOfStudents.valid && maxNumberOfStudents.dirty,
-                        'is-invalid': maxNumberOfStudents.invalid && maxNumberOfStudents.dirty}">
-                    <div class="invalid-feedback" *ngIf="maxNumberOfStudents.invalid && maxNumberOfStudents.dirty">
-                        <p *ngIf="maxNumberOfStudents.errors.required">The number is required!</p>
-                        <p *ngIf="maxNumberOfStudents.errors.min">The number should be positive!</p>
-                    </div>
-                </div>
-            
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea class="form-control" formControlName="description" textarea rows="4" placeholder="This course is very ..." [ngClass]="{
-                        'is-valid': description.valid && description.dirty,
-                        'is-invalid': description.invalid && description.dirty}"></textarea>
-                    <div class="invalid-feedback" *ngIf="description.invalid && description.dirty">
-                        <p>Course description may be short but required!</p>
-                    </div>
-                </div>
-            </div> -->
         </div>
     </div>
 

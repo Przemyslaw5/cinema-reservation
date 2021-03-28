@@ -5,6 +5,7 @@ import { Movie } from 'src/app/model/movie';
 import { NewSeance } from 'src/app/model/newSeance';
 import { Seance } from 'src/app/model/seance';
 import { CinemaService } from 'src/app/services/cinema.service';
+import { SeanceService } from 'src/app/services/seance.service';
 
 @Component({
   selector: 'app-add-or-edit-seances',
@@ -22,8 +23,7 @@ export class AddOrEditSeancesComponent implements OnInit {
   screeningRoomConflict = false;
 
   modelForm = new FormGroup({
-    seances: new FormArray([
-    ]),
+    seances: new FormArray([]),
   })
 
   get seances(): FormArray {
@@ -34,6 +34,7 @@ export class AddOrEditSeancesComponent implements OnInit {
 
   constructor(
     private cinemaService: CinemaService,
+    private seanceService: SeanceService,
     private route: ActivatedRoute
   ) { }
 
@@ -42,8 +43,8 @@ export class AddOrEditSeancesComponent implements OnInit {
     this.getAllScreeningRooms()
   }
 
-  loadSeancesFromMovie() {
-    this.cinemaService.getSeancesFromMovieId(this.movie!.id).subscribe(seances => {
+  private loadSeancesFromMovie() {
+    this.seanceService.getSeancesFromMovieId(this.movie!.id).subscribe(seances => {
       this.seancesFromMovie = seances;
       this.seancesFromMovie.map(seance => {
         (<FormArray>this.modelForm.get('seances')).push(new FormGroup({
@@ -60,7 +61,7 @@ export class AddOrEditSeancesComponent implements OnInit {
     });
   }
 
-  checkAddingNewSeance() {
+  public checkAddingNewSeance() {
     const index = (<FormArray>this.modelForm.get('seances')).length - 1
 
     const seanceForm = (<FormArray>this.modelForm.get('seances')).at((index))
@@ -72,34 +73,38 @@ export class AddOrEditSeancesComponent implements OnInit {
       this.screeningRoomConflict = true
     }
     else { 
-      this.prepareNewSeance(screeningRoom, startDate, startTime) 
-      this.cinemaService.addNewSeance(this.newSeance!).subscribe(value => {
-        if (value == null) {
-          this.screeningRoomConflict = false
-          this.timeConflict = true
-        }
-        else {
-          this.timeConflict = false;
-
-          (<FormArray>this.modelForm.get('seances')).removeAt(index);
-
-          (<FormArray>this.modelForm.get('seances')).push(new FormGroup({
-            date: new FormControl(new Date(value.startDate)),
-            time: new FormControl(new Date(value.startDate)),
-            screeningRoom: new FormControl(value.screeningRoomName, [Validators.required])
-          }))
-
-          this.seancesFromMovie.push(value)
-          this.addAnotherSeance()
-        }
-      }
-      , error => {
-        console.log(error)
-      });
+      this.addNewSeance(screeningRoom, startDate, startTime, index)
     }
   } 
 
-  prepareNewSeance(screeningRoom: string, startDate: Date, startTime: string) {
+  private addNewSeance(screeningRoom: string, startDate: Date, startTime: string, index: number) {
+    this.prepareNewSeance(screeningRoom, startDate, startTime) 
+    this.seanceService.addNewSeance(this.newSeance!).subscribe(value => {
+      if (value == null) {
+        this.screeningRoomConflict = false
+        this.timeConflict = true
+      }
+      else {
+        this.timeConflict = false;
+
+        (<FormArray>this.modelForm.get('seances')).removeAt(index);
+
+        (<FormArray>this.modelForm.get('seances')).push(new FormGroup({
+          date: new FormControl(new Date(value.startDate)),
+          time: new FormControl(new Date(value.startDate)),
+          screeningRoom: new FormControl(value.screeningRoomName, [Validators.required])
+        }))
+
+        this.seancesFromMovie.push(value)
+        this.addAnotherSeance()
+      }
+    }
+    , error => {
+      console.log(error)
+    });
+  }
+
+  private prepareNewSeance(screeningRoom: string, startDate: Date, startTime: string) {
     const date = new Date(startDate)
     date.setHours(parseInt(startTime.split(":")[0]))
     date.setMinutes(parseInt(startTime.split(":")[1]))
@@ -111,7 +116,7 @@ export class AddOrEditSeancesComponent implements OnInit {
     }
   }
 
-  addAnotherSeance() {
+  private addAnotherSeance() {
     (<FormArray>this.modelForm.get('seances')).push(new FormGroup({
       date: new FormControl(),
       time: new FormControl(),
@@ -122,7 +127,7 @@ export class AddOrEditSeancesComponent implements OnInit {
     this.screeningRoomConflict = false;
   }
 
-  getMovieFromUrl() {
+  private getMovieFromUrl() {
     const id = this.route.snapshot.paramMap.get("id");
       this.cinemaService.getMovieById(id!).subscribe(
         movie => {
@@ -134,7 +139,7 @@ export class AddOrEditSeancesComponent implements OnInit {
       );
   }
 
-  getAllScreeningRooms() {
+  private getAllScreeningRooms() {
     this.cinemaService.getAllScreeningRooms().subscribe(rooms => {
       this.allScreeningRoomOptions = rooms.map(room => room.name)
     });
@@ -142,7 +147,7 @@ export class AddOrEditSeancesComponent implements OnInit {
 
   public deleteSeance(index: number) {
     (<FormArray>this.modelForm.get('seances')).removeAt(index)
-    this.cinemaService.deleteSeance(this.seancesFromMovie[index].id)
+    this.seanceService.deleteSeance(this.seancesFromMovie[index].id)
     this.seancesFromMovie.splice(index, 1)
   }
 

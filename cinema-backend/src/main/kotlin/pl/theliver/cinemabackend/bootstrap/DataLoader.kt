@@ -267,10 +267,10 @@ class DataLoader(
     override fun run(vararg args: String?) {
         initMovies()
         initScreeningRooms()
-        initSeances(200)
+        initSeances(6)
         initPlaces()
         initUsers()
-        initRates(500)
+        initRates(5)
         initReservations()
         calculateRatesForEachFilm()
     }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserReservation } from 'src/app/model/userReservation';
-import { CinemaService } from 'src/app/services/cinema.service';
+import { ReservationService } from 'src/app/services/reservation.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -14,7 +14,7 @@ export class UserReservationsComponent implements OnInit {
   reservations?: UserReservation[];
 
   constructor(
-    private cinemaService: CinemaService,
+    private reservationService: ReservationService,
     private userService: UserService
   ) { }
 
@@ -23,9 +23,8 @@ export class UserReservationsComponent implements OnInit {
   }
 
   getReservations() {
-    this.cinemaService.getAllReservationsForUser(this.userService.getUsername()!).subscribe(reservations => {
+    this.reservationService.getAllReservationsForUser(this.userService.getUsername()!).subscribe(reservations => {
       this.reservations = reservations;
-      console.log(reservations)
     }
     , error => {
       console.log(error)
