@@ -6,4 +6,5 @@ import pl.theliver.cinemabackend.infrastructure.model.PlaceEntity
 
 @Repository
 interface PlaceCrudRepositoryJpa : CrudRepository<PlaceEntity, String> {
+    fun findBySeanceId(id: String): List<PlaceEntity>
 }

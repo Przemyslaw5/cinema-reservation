@@ -7,6 +7,10 @@ import { Seance } from 'src/app/model/seance';
 import { ScreeningRoom } from 'src/app/model/screeningRoom';
 import { ReservedType } from 'src/app/model/reservedType';
 import { ReservationDate } from 'src/app/model/reservationDate';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UserService } from 'src/app/services/user.service';
+import { ReservationService } from 'src/app/services/reservation.service';
+import { SeanceService } from 'src/app/services/seance.service';
 
 @Component({
   selector: 'app-reservation',
@@ -30,15 +34,24 @@ export class ReservationComponent implements OnInit {
     day: "",
     hour: ""
   }
-  
+
+  numberPlaces: Array<number> = []
 
   screeningRoom!: ScreeningRoom;
+  seancId?: string;
   placesFromSeance!: Place[];
 
   placefForTemplate: Place[][] = [[]]
 
+  modelForm = new FormGroup({
+    secretWord: new FormControl('', [Validators.required, Validators.minLength(5)])
+  })
+
   constructor(
     private cinemaService: CinemaService,
+    private seanceService: SeanceService,
+    private reservationService: ReservationService,
+    private userService: UserService,
     private route: ActivatedRoute,
   ) { }
 
@@ -57,7 +70,7 @@ export class ReservationComponent implements OnInit {
   }
 
   private getAllSeancesFromMovie(){
-    this.cinemaService.getSeancesFromMovieId(this.movie.id).subscribe(seances => {
+    this.seanceService.getSeancesFromMovieId(this.movie.id).subscribe(seances => {
       this.allSeancesFromMovie = seances;
       this.prepareYears()
     });
@@ -121,6 +134,7 @@ export class ReservationComponent implements OnInit {
   }
 
   private getScreeningRoomAndPreparePlaces(screeningRoomId: string, seanceId: string) {
+    this.seancId = seanceId
     this.cinemaService.getScreeningRoom(screeningRoomId).subscribe(screeningRoom => {
       this.screeningRoom = screeningRoom;
       this.getPlaces(seanceId)
@@ -128,7 +142,7 @@ export class ReservationComponent implements OnInit {
   }
 
   private getPlaces(seanceId: string) {
-    this.cinemaService.getPlacesFromSeanceId(seanceId).subscribe(places => {
+    this.seanceService.getPlacesFromSeanceId(seanceId).subscribe(places => {
       this.placesFromSeance = places;
       this.preparePlaces()
     });
@@ -155,10 +169,27 @@ export class ReservationComponent implements OnInit {
   public clickSeat(row: number, seat: number) {
     if (this.placefForTemplate[row][seat].isReserved == ReservedType.FREE){
       this.placefForTemplate[row][seat].isReserved = ReservedType.RESERVED_BY_ME;
+      this.numberPlaces.push(parseInt(this.placefForTemplate[row][seat].number))
     }
     else if (this.placefForTemplate[row][seat].isReserved == ReservedType.RESERVED_BY_ME){
       this.placefForTemplate[row][seat].isReserved = ReservedType.FREE;
+      this.numberPlaces = this.numberPlaces.filter(elem => elem != parseInt(this.placefForTemplate[row][seat].number))
     }
+    console.log(this.numberPlaces)
+  }
+
+  public addNewReservation() {
+    var secretWord = this.modelForm.get('secretWord')?.value;
+    console.log(secretWord)
+
+    this.reservationService.addNewReservation({ placeNumbers: this.numberPlaces, secretWord: secretWord, seanceId: this.seancId!, username: this.userService.getUsername()! }).subscribe(value => {
+      if (value) {
+        console.log(value)
+      }
+    }
+    , error => {
+      console.log(error)
+    });
   }
 
 }

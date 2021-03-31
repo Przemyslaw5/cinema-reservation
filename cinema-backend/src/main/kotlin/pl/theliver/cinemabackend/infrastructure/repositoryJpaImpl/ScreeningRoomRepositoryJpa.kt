@@ -20,4 +20,6 @@ class ScreeningRoomRepositoryJpa(
 
     override fun getScreeningRoomById(id: String) =
             screeningRoomCrudRepositoryJpa.findById(id).orElse(null).toDomain()
+
+    override fun getScreeningRoomByName(name: String) = screeningRoomCrudRepositoryJpa.findByName(name).toDomain()
 }

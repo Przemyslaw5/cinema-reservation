@@ -6,4 +6,5 @@ import pl.theliver.cinemabackend.infrastructure.model.ScreeningRoomEntity
 
 @Repository
 interface ScreeningRoomCrudRepositoryJpa : CrudRepository<ScreeningRoomEntity, String> {
+    fun findByName(name: String): ScreeningRoomEntity
 }

@@ -8,4 +8,5 @@ import pl.theliver.cinemabackend.infrastructure.model.SeanceEntity
 @Repository
 interface SeanceCrudRepositoryJpa : CrudRepository<SeanceEntity, String> {
     fun getAllSeancesByMovieId(id: String): List<SeanceEntity>
+    fun getAllSeancesByScreeningRoomId(id: String): List<SeanceEntity>
 }

@@ -21,4 +21,6 @@ class MovieRepositoryJpa(
     override fun getAllMovies() = movieCrudRepositoryJpa.findAll().map { it.toDomain() }
 
     override fun getMovieById(id: String) = movieCrudRepositoryJpa.findById(id).orElse(null).toDomain()
+
+    override fun getMovieByTitle(title: String) = movieCrudRepositoryJpa.findByTitle(title).map { it.toDomain() }
 }

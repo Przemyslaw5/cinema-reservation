@@ -25,4 +25,8 @@ class PlaceRepositoryJpa(
     override fun getAllPlaces() = placeCrudRepositoryJpa.findAll().map { it.toDomain() }
 
     override fun getPlaceById(id: String) = placeCrudRepositoryJpa.findById(id).orElse(null).toDomain()
+
+    override fun getAllPlacesBySeanceId(id: String) = placeCrudRepositoryJpa.findBySeanceId(id).map { it.toDomain() }
+
+    override fun deleteById(id: String) = placeCrudRepositoryJpa.deleteById(id)
 }

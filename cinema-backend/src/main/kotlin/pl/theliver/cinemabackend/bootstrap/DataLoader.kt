@@ -228,17 +228,19 @@ class DataLoader(
                     }
                 }
             }
-            val reservation = Reservation(
+            if (userPlaces.size > 0) {
+                val reservation = Reservation(
                     user = user,
                     places = userPlaces,
                     secretWord = secretWords.random(),
                     seance = element
-            )
-            reservationService.addReservation(reservation)
-            userPlaces.map { it.reservationId = reservation.id }
-            userPlaces.map { placeService.addPlace(it) }
-            user.reservationsIds.add(reservation.id)
-            element.reservationsIds.add(reservation.id)
+                )
+                reservationService.addReservation(reservation)
+                userPlaces.map { it.reservationId = reservation.id }
+                userPlaces.map { placeService.addPlace(it) }
+                user.reservationsIds.add(reservation.id)
+                element.reservationsIds.add(reservation.id)
+            }
         }
         users.map { userService.addUser(it) }
         seances.map { seanceService.addSeance(it) }
@@ -265,10 +267,10 @@ class DataLoader(
     override fun run(vararg args: String?) {
         initMovies()
         initScreeningRooms()
-        initSeances(200)
+        initSeances(6)
         initPlaces()
         initUsers()
-        initRates(500)
+        initRates(5)
         initReservations()
         calculateRatesForEachFilm()
     }

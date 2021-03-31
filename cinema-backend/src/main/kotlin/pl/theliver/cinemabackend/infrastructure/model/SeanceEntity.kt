@@ -12,7 +12,7 @@ data class SeanceEntity(
         val id: String = UUID.randomUUID().toString(),
         val startDate: LocalDateTime,
         @OneToMany(mappedBy = "seance", fetch = FetchType.LAZY)
-        val places: List<PlaceEntity>,
+        val places: List<PlaceEntity> = emptyList(),
         @ManyToOne
         @JoinColumn(name = "movie_id")
         val movie: MovieEntity,

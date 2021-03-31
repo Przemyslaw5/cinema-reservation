@@ -1,0 +1,91 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 my-5 reservations"> 
+            <div class="row">
+                <div class="col-md-12 py-5">
+                    <h1>Seances</h1>
+                </div>
+                <div class="col-md-12">
+                    <form class="m-3" [formGroup]="modelForm" novalidate>
+                        <div class="form-group">
+                            <div formArrayName="seances">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 200px;">Number</th>
+                                            <th style="width: 200px;">Screening Room</th>
+                                            <th style="width: 200px;">Date (mm-dd-yyyy)</th>
+                                            <th style="width: 200px;">Time (hh-mm)</th>
+                                            <th style="width: 200px;">Action</th>
+                                        </tr>
+                                    </thead>
+                                
+                                    <tbody>
+                                        <tr *ngFor="let seance of seances.controls; index as i" [formGroupName]="i" style="height: 10px;">
+                                            <td class="form-group">
+                                                <div>
+                                                    <p>{{i + 1}}</p>
+                                                </div>
+                                            </td>
+                                            <td class="form-group">
+                                                <div *ngIf="i != seances.length - 1">
+                                                    <p>{{seance.get('screeningRoom')?.value}}</p>
+                                                </div>
+                                                <div *ngIf="i == seances.length - 1">
+                                                    <select class="form-control" formControlName="screeningRoom" [ngClass]="{
+                                                        'is-valid': seance.get('screeningRoom')?.valid && seance.get('screeningRoom')?.dirty,
+                                                        'is-invalid': seance.get('screeningRoom')?.invalid && seance.get('screeningRoom')?.dirty}">
+                                                        <option *ngFor="let option of allScreeningRoomOptions" [value]="option">{{option}}</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td class="form-group">
+                                                <div *ngIf="i != seances.length - 1">
+                                                    <p>{{getDate(i)}}</p>
+                                                </div>
+                                                <div *ngIf="i == seances.length - 1">
+                                                    <input type="date"
+                                                        placeholder="Datepicker"
+                                                        class="form-control"
+                                                        Value="2012-10-01"
+                                                        formControlName="date">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div *ngIf="i != seances.length - 1">
+                                                    <p>{{getTime(i)}}</p>
+                                                </div>
+                                                <div *ngIf="i == seances.length - 1">
+                                                    <input type="time" 
+                                                        class="form-control" 
+                                                        min="08:00"
+                                                        max="22:00" 
+                                                        formControlName="time"
+                                                        required>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div *ngIf="i != seances.length - 1">
+                                                    <button type="button" class="btn btn-danger" (click)="deleteSeance(i)">Delete</button>
+                                                </div>
+                                                <div class="text-center" *ngIf="i == seances.length - 1">
+                                                    <button type="button" class="btn btn-success" (click)="checkAddingNewSeance()">Add</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="error mt-0" *ngIf="screeningRoomConflict">
+                                    <p>All data are required!</p>
+                                </div>
+                                <div class="error mt-0" *ngIf="timeConflict">
+                                    <p>There is a conflict with another seance. Please choose a different time!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

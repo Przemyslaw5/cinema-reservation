@@ -1,0 +1,31 @@
+.reservations {
+    border-radius: 10px;
+    background-color: white;
+    text-align: center;
+}
+
+.buttonShape { 
+    width: 40px; 
+    height: 40px; 
+    padding: 7px 0px; 
+    border-radius: 20px; 
+    font-size: 15px; 
+    margin: 5px;
+    text-align: center; 
+} 
+
+.cursor-disabled {
+    cursor: default;
+    pointer-events: all !important;
+}
+
+.btn-success:hover,.btn-success:focus,.btn-success:active, 
+.btn-success:active:focus:not(:disabled):not(.disabled),
+.btn:focus, .btn:active, .btn:hover{
+    box-shadow: none!important;
+    outline: 0;
+}
+
+.error {
+    color: red;
+}

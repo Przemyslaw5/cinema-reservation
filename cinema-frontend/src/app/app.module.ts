@@ -19,6 +19,12 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ReservationComponent } from './components/reservation/reservation.component';
 import { UserReservationsComponent } from './components/user-reservations/user-reservations.component';
+import { AddOrEditMovieComponent } from './components/movies/add-or-edit-movie/add-or-edit-movie.component';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+import { AddOrEditSeancesComponent } from './components/movies/add-or-edit-seances/add-or-edit-seances.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +40,9 @@ import { UserReservationsComponent } from './components/user-reservations/user-r
     RegisterComponent,
     ReservationComponent,
     UserReservationsComponent,
+    AddOrEditMovieComponent,
+    AddOrEditSeancesComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -43,6 +52,9 @@ import { UserReservationsComponent } from './components/user-reservations/user-r
     FormsModule,
     ReactiveFormsModule,
     NgxSliderModule,
+    BrowserAnimationsModule,
+    BsDatepickerModule.forRoot(),
+    TimepickerModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
