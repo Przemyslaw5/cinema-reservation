@@ -12,10 +12,12 @@ services:
     image: docker-registry.theliver.pl/cinema-reservation-frontend:latest
     container_name: cinema-reservation-frontend
     ports:
-    - 7777:80
+      - 7777:80
     restart: always
 
   cinema-reservation-backend:
     image: docker-registry.theliver.pl/cinema-reservation-backend:latest
     container_name: cinema-reservation-backend
+    ports:
+      - 7778:8080
     restart: always

@@ -1,4 +1,4 @@
-FROM openjdk:15
+FROM openjdk:15-alpine
 WORKDIR /app
 ADD . .
 RUN ./gradlew bootJar
