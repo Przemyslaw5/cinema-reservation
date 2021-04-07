@@ -13,3 +13,4 @@ services:
       MYSQL_DATABASE: 'cinema-reservation'
     ports:
       - '3308:3306'
+    restart: always
