@@ -40,6 +40,7 @@ dependencies {
 
     implementation("org.mariadb.jdbc:mariadb-java-client:2.7.2")
     implementation("org.liquibase:liquibase-core")
+    testImplementation("com.h2database:h2:1.4.200")
 }
 
 tasks.withType<KotlinCompile> {

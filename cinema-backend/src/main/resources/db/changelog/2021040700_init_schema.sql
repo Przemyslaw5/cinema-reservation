@@ -11,7 +11,7 @@ create table movie
     release_date  date,
     title         varchar(255),
     primary key (id)
-) engine=InnoDB;
+);
 create table place
 (
     id             varchar(255) not null,
@@ -20,7 +20,7 @@ create table place
     reservation_id varchar(255),
     seance_id      varchar(255),
     primary key (id)
-) engine=InnoDB;
+);
 create table rate
 (
     id        varchar(255)     not null,
@@ -28,7 +28,7 @@ create table rate
     movie_id  varchar(255),
     user_id   varchar(255),
     primary key (id)
-) engine=InnoDB;
+);
 create table reservation
 (
     id          varchar(255) not null,
@@ -36,19 +36,19 @@ create table reservation
     seance_id   varchar(255),
     user_id     varchar(255),
     primary key (id)
-) engine=InnoDB;
+);
 create table screening_room
 (
     id           varchar(255) not null,
     name         varchar(255),
     place_number integer      not null,
     primary key (id)
-) engine=InnoDB;
+);
 create table screening_room_places_plan
 (
     screening_room_id varchar(255) not null,
     places_plan       varchar(255)
-) engine=InnoDB;
+);
 create table seance
 (
     id                varchar(255) not null,
@@ -56,7 +56,7 @@ create table seance
     movie_id          varchar(255),
     screening_room_id varchar(255),
     primary key (id)
-) engine=InnoDB;
+);
 create table user
 (
     id               varchar(255) not null,
@@ -64,7 +64,7 @@ create table user
     leading_question varchar(255),
     username         varchar(255),
     primary key (id)
-) engine=InnoDB;
+);
 alter table place
     add constraint FKe3psxojekx01euctc1uyq7glu foreign key (reservation_id) references reservation (id);
 alter table place
