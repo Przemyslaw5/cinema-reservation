@@ -256,7 +256,12 @@ class DataLoader(
             for (element in movies[i].ratesIds) {
                 sumOfRates += rateService.getRateById(element).userRate
             }
-            movies[i].rate = sumOfRates / movies[i].ratesIds.size
+            if (movies[i].ratesIds.size > 0) {
+                movies[i].rate = sumOfRates / movies[i].ratesIds.size
+            }
+            else {
+                movies[i].rate = 0.0
+            }
             movies[i].ratesNumber = movies[i].ratesIds.size
         }
         movies.map { movieService.addMovie(it) }
@@ -264,7 +269,7 @@ class DataLoader(
         logger.info("Calculate rates for each movie successfully")
     }
 
-    override fun run(vararg args: String?) {
+    private fun initAllDatabase() {
         initMovies()
         initScreeningRooms()
         initSeances(6)
@@ -273,5 +278,11 @@ class DataLoader(
         initRates(5)
         initReservations()
         calculateRatesForEachFilm()
+    }
+
+    override fun run(vararg args: String?) {
+        if (movieService.getAllMovies().isEmpty()) {
+            initAllDatabase()
+        }
     }
 }

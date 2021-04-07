@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - changeSet:
+      id: Create user table
+      author: pwatroba
+      changes:
+        - sqlFile:
+            path: classpath:db/changelog/2021040700_init_schema.sql

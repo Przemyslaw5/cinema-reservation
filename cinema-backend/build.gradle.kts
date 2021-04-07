@@ -33,8 +33,14 @@ dependencies {
 //    runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+//    implementation("com.h2database:h2:1.3.148")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("io.springfox:springfox-boot-starter:3.0.0")
+    implementation("io.springfox:springfox-swagger-ui:3.0.0")
 
-    implementation("com.h2database:h2:1.3.148")
+    implementation("org.mariadb.jdbc:mariadb-java-client:2.7.2")
+    implementation("org.liquibase:liquibase-core")
+    testImplementation("com.h2database:h2:1.4.200")
 }
 
 tasks.withType<KotlinCompile> {
