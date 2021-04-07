@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 import java.util.*
 import javax.persistence.*
 
-@Entity
+@Entity(name = "Seance")
 data class SeanceEntity(
         @Id
         val id: String = UUID.randomUUID().toString(),

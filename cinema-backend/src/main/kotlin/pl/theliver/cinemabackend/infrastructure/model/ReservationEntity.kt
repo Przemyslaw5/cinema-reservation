@@ -5,7 +5,7 @@ import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.*
 import java.util.*
 import javax.persistence.*
 
-@Entity
+@Entity(name = "Reservation")
 data class ReservationEntity(
         @Id
         val id: String = UUID.randomUUID().toString(),

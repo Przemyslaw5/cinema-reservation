@@ -21,3 +21,17 @@ services:
     ports:
       - 7778:8080
     restart: always
+
+  dev-cinema-backend-db:
+    container_name: dev-cinema-backend-db
+    image: mariadb:10.5.9
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./data-volume:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 'p742AuYthQmchhR'
+      MYSQL_USER: 'cinema-reservation-user'
+      MYSQL_PASSWORD: 'cinema-reservation-password'
+      MYSQL_DATABASE: 'cinema-reservation'
+    ports:
+      - 3309:3306

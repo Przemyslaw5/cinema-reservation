@@ -10,7 +10,7 @@ import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 
-@Entity
+@Entity(name = "Rate")
 data class RateEntity(
         @Id
         val id: String = UUID.randomUUID().toString(),

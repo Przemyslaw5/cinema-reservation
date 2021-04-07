@@ -5,7 +5,7 @@ import pl.theliver.cinemabackend.infrastructure.crudRepositoryJpa.SeanceCrudRepo
 import java.util.*
 import javax.persistence.*
 
-@Entity
+@Entity(name = "ScreeningRoom")
 data class ScreeningRoomEntity(
         @Id
         val id: String = UUID.randomUUID().toString(),
